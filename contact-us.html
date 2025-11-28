@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact UptimeLegacy – Obsolete & Legacy Automation Spare Parts</title>
+  <meta name="description" content="Contact UptimeLegacy to source obsolete and legacy industrial automation parts. Tell us what you need and our team will respond with options and lead times.">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --primary:#0A4F8E;
+      --primary-2:#2679B1;
+      --bg:#fff;
+      --muted:#f2f2f2;
+      --muted-2:#f6f9fc;
+      --text:#1e293b;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:'Roboto',sans-serif;color:var(--text);background:#fff;line-height:1.5}
+    .container{max-width:1200px;margin:0 auto;padding:0 24px}
+
+    /* Header */
+    header{
+      position:fixed;inset:0 0 auto 0;background:#fff;border-bottom:1px solid #e8edf3;
+      z-index:50;box-shadow:0 2px 6px rgba(10,79,142,.06)
+    }
+    .header-inner{
+      display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px 0;
+    }
+    .logo-container{display:flex;align-items:center}
+    .logo-container img{
+      height:88px;width:auto;object-fit:contain;filter:drop-shadow(0 2px 2px rgba(0,0,0,.06));
+    }
+    nav{display:flex;gap:44px;align-items:center;flex-wrap:wrap}
+    nav a{text-decoration:none;color:#334155;font-size:19px;font-weight:700;letter-spacing:.2px}
+    nav a:hover{color:var(--primary)}
+    .lang-switch{display:flex;align-items:center;gap:8px}
+    .lang-switch button{
+      border:1px solid #e2e8f0;background:#fff;padding:6px 10px;border-radius:8px;font-size:12px;cursor:pointer
+    }
+    .lang-switch button.active{background:var(--primary);border-color:var(--primary);color:#fff}
+
+    /* Main */
+    main{margin-top:120px}
+
+    /* Generic sections (reuse from home for consistent typography) */
+    section{padding:72px 0}
+    .section-title{font-family:'Montserrat',sans-serif;font-size:34px;color:var(--primary);text-align:center;margin-bottom:10px}
+    .section-intro{text-align:center;color:#64748b;max-width:820px;margin:0 auto 26px}
+
+    footer{background:#0f172a;color:#e2e8f0}
+    .footer-content{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;padding:48px 0}
+    .footer-section h3{font-family:'Montserrat',sans-serif;font-size:14px;margin-bottom:10px;letter-spacing:.6px;text-transform:uppercase;color:#cbd5e1}
+    .footer-section a{display:block;color:#94a3b8;text-decoration:none;font-size:13px;margin-bottom:6px}
+    .footer-section a:hover{color:#fff}
+    .footer-bottom{border-top:1px solid #1f2a44;padding:18px 0;text-align:center;font-size:12px;color:#94a3b8}
+
+    .btn{padding:12px 22px;border-radius:8px;border:2px solid transparent;font-weight:700;font-size:14px;cursor:pointer;text-decoration:none;display:inline-block}
+    .btn-primary{background:var(--primary);color:#fff}
+    .btn-primary:hover{background:var(--primary-2);box-shadow:0 6px 16px rgba(10,79,142,.22)}
+
+    /* CONTACT PAGE SPECIFIC */
+    .contact-page{background:var(--muted-2);}
+    .contact-layout{max-width:760px;margin:0 auto;}
+    .back-link{
+      display:inline-flex;
+      align-items:center;
+      gap:4px;
+      font-size:13px;
+      text-decoration:none;
+      color:#64748b;
+      margin-bottom:18px;
+    }
+    .back-link:hover{color:var(--primary);}
+    .contact-form-card{
+      margin-top:18px;
+      background:#fff;
+      border-radius:12px;
+      border:1px solid #e5e9ef;
+      padding:24px 22px;
+      box-shadow:0 10px 28px rgba(15,23,42,.06);
+    }
+    .contact-form-card form{
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+    }
+    .form-field label{
+      display:block;
+      font-weight:500;
+      font-size:14px;
+      margin-bottom:6px;
+      color:#0f172a;
+    }
+    .form-field input,
+    .form-field textarea{
+      width:100%;
+      padding:10px 12px;
+      border-radius:8px;
+      border:1px solid #cbd5e1;
+      font-size:14px;
+      outline:none;
+      background:#fff;
+    }
+    .form-field input:focus,
+    .form-field textarea:focus{
+      border-color:var(--primary);
+      box-shadow:0 0 0 1px rgba(37,99,235,0.16);
+    }
+    .form-field textarea{
+      min-height:150px;
+      resize:vertical;
+    }
+    .error-message{
+      font-size:12px;
+      color:#dc2626;
+      margin-top:4px;
+      display:none;
+    }
+    .success-message{
+      margin-top:16px;
+      font-size:14px;
+      color:#16a34a;
+      display:none;
+    }
+    #submit-btn{
+      align-self:flex-start;
+      margin-top:4px;
+    }
+    #submit-btn[disabled]{
+      opacity:0.6;
+      cursor:not-allowed;
+      box-shadow:none;
+    }
+
+    @media (max-width:900px){
+      nav{gap:20px}
+      nav a{font-size:15px}
+      .footer-content{grid-template-columns:repeat(2,1fr)}
+    }
+    @media (max-width:560px){
+      nav{gap:16px}
+      nav a{font-size:14px}
+      .logo-container img{height:64px}
+      main{margin-top:104px}
+      .contact-form-card{padding:20px 16px}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container header-inner">
+      <a class="logo-container" href="index.html#home" aria-label="UptimeLegacy Home">
+        <img src="img/logo_grande.png" alt="UptimeLegacy Logo">
+      </a>
+      <nav>
+        <a href="index.html#home" data-i18n="nav.home">Home</a>
+        <a href="index.html#products" data-i18n="nav.products">Products</a>
+        <a href="index.html#brands" data-i18n="nav.brands">Brands</a>
+        <a href="index.html#why-us" data-i18n="nav.whyus">Why Us</a>
+        <a href="index.html#resources" data-i18n="nav.resources">Resources</a>
+        <a href="contact-us.html" data-i18n="nav.contact">Contact</a>
+      </nav>
+      <div class="lang-switch" aria-label="Language switcher">
+        <button id="btn-en" class="active" data-lang="en">EN</button>
+        <button id="btn-es" data-lang="es">ES</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="contact-page">
+      <div class="container contact-layout">
+        <a href="index.html#home" class="back-link" data-i18n="contact.form.back">← Back to home</a>
+
+        <h1 class="section-title" data-i18n="contact.form.title">Contact UptimeLegacy</h1>
+        <p class="section-intro" data-i18n="contact.form.intro">
+          Tell us what you need help with and our team will get back to you as soon as possible.
+        </p>
+
+        <div class="contact-form-card">
+          <form id="contact-form" novalidate>
+            <div class="form-field">
+              <label for="name" data-i18n="contact.form.nameLabel">Name</label>
+              <input type="text" id="name" name="name" data-i18n="contact.form.namePlaceholder">
+              <p class="error-message error-required" data-i18n="contact.form.required">This field is required</p>
+            </div>
+
+            <div class="form-field">
+              <label for="company" data-i18n="contact.form.companyLabel">Company Name</label>
+              <input type="text" id="company" name="company" data-i18n="contact.form.companyPlaceholder">
+              <p class="error-message error-required" data-i18n="contact.form.required">This field is required</p>
+            </div>
+
+            <div class="form-field">
+              <label for="email" data-i18n="contact.form.emailLabel">Email Address</label>
+              <input type="email" id="email" name="email" data-i18n="contact.form.emailPlaceholder">
+              <p class="error-message error-required" data-i18n="contact.form.required">This field is required</p>
+              <p class="error-message error-invalid" data-i18n="contact.form.invalidEmail">Please enter a valid email address</p>
+            </div>
+
+            <div class="form-field">
+              <label for="phone" data-i18n="contact.form.phoneLabel">Telephone number</label>
+              <input type="tel" id="phone" name="phone" data-i18n="contact.form.phonePlaceholder">
+              <p class="error-message error-required" data-i18n="contact.form.required">This field is required</p>
+            </div>
+
+            <div class="form-field">
+              <label for="message" data-i18n="contact.form.messageLabel">Message</label>
+              <textarea id="message" name="message" rows="6" data-i18n="contact.form.messagePlaceholder"></textarea>
+              <p class="error-message error-required" data-i18n="contact.form.required">This field is required</p>
+            </div>
+
+            <button type="submit" class="btn btn-primary" id="submit-btn" data-i18n="contact.form.submit" disabled>
+              Send message
+            </button>
+          </form>
+
+          <p id="form-success" class="success-message" data-i18n="contact.form.success">
+            Thanks for your message. We will get back to you shortly.
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-content">
+      <div class="footer-section">
+        <h3 data-i18n="footer.products">Products</h3>
+        <a href="#" data-i18n="footer.p1">PLCs & I/O</a>
+        <a href="#" data-i18n="footer.p2">HMIs & PCs</a>
+        <a href="#" data-i18n="footer.p3">Drives & Inverters</a>
+        <a href="#" data-i18n="footer.p4">Motors & Servos</a>
+        <a href="#" data-i18n="footer.p5">CNC Controllers</a>
+        <a href="#" data-i18n="footer.p6">Safety Devices</a>
+      </div>
+      <div class="footer-section">
+        <h3 data-i18n="footer.brands">Brands</h3>
+        <a href="#">Siemens</a>
+        <a href="#">Allen-Bradley</a>
+        <a href="#">Schneider Electric</a>
+        <a href="#">Mitsubishi</a>
+        <a href="#">Omron</a>
+        <a href="#">ABB / Lenze</a>
+      </div>
+      <div class="footer-section">
+        <h3 data-i18n="footer.resources">Resources</h3>
+        <a href="#" data-i18n="footer.r1">Guides & Checklists</a>
+        <a href="#" data-i18n="footer.r2">Blog & Insights</a>
+        <a href="#" data-i18n="footer.r3">Case Studies</a>
+        <a href="#" data-i18n="footer.r4">FAQ</a>
+        <a href="#" data-i18n="footer.r5">Support</a>
+      </div>
+      <div class="footer-section">
+        <h3 data-i18n="footer.company">Company</h3>
+        <a href="#" data-i18n="footer.c1">About UptimeLegacy</a>
+        <a href="contact-us.html" data-i18n="footer.c2">Contact Us</a>
+        <a href="#" data-i18n="footer.c3">Privacy Policy</a>
+        <a href="#" data-i18n="footer.c4">Terms & Conditions</a>
+        <a href="#" data-i18n="footer.c5">Cookie Policy</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p><span data-i18n="footer.copy">© 2024 UptimeLegacy. All rights reserved. | No downtime for legacy lines</span></p>
+    </div>
+  </footer>
+
+  <script src="src/lang.js"></script>
+  <script>
+    // Language toggler logic (same behavior as home)
+    const btnEn = document.getElementById('btn-en');
+    const btnEs = document.getElementById('btn-es');
+    let currentLang = 'en';
+
+    const applyLanguage = (lang) => {
+      const targetLang = lang === 'es' ? 'es' : 'en';
+      currentLang = targetLang;
+      document.documentElement.setAttribute('lang', targetLang);
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        const value = (window.I18N && window.I18N[targetLang] && window.I18N[targetLang][key]) || '';
+        if(value){
+          if(el.tagName.toLowerCase()==='input' || el.tagName.toLowerCase()==='textarea'){
+            el.setAttribute('placeholder', value);
+          }else{
+            el.innerHTML = value;
+          }
+        }
+      });
+      btnEn.classList.toggle('active', targetLang==='en');
+      btnEs.classList.toggle('active', targetLang==='es');
+      localStorage.setItem('UL_LANG', targetLang);
+    };
+
+    btnEn.addEventListener('click', ()=>applyLanguage('en'));
+    btnEs.addEventListener('click', ()=>applyLanguage('es'));
+    const stored = localStorage.getItem('UL_LANG') || 'en';
+    applyLanguage(stored);
+
+    // Contact form validation
+    const form = document.getElementById('contact-form');
+    const nameInput = document.getElementById('name');
+    const companyInput = document.getElementById('company');
+    const emailInput = document.getElementById('email');
+    const phoneInput = document.getElementById('phone');
+    const messageInput = document.getElementById('message');
+    const submitBtn = document.getElementById('submit-btn');
+    const successMessage = document.getElementById('form-success');
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    const fields = [nameInput, companyInput, emailInput, phoneInput, messageInput];
+
+    function showError(input, type) {
+      const field = input.closest('.form-field');
+      if (!field) return;
+      const requiredEl = field.querySelector('.error-required') || field.querySelector('.error-message');
+      const invalidEl = field.querySelector('.error-invalid');
+      if (type === 'required') {
+        if (requiredEl) requiredEl.style.display = 'block';
+        if (invalidEl) invalidEl.style.display = 'none';
+      } else if (type === 'invalid') {
+        if (requiredEl) requiredEl.style.display = 'none';
+        if (invalidEl) invalidEl.style.display = 'block';
+      }
+    }
+
+    function clearError(input) {
+      const field = input.closest('.form-field');
+      if (!field) return;
+      field.querySelectorAll('.error-message').forEach(el => el.style.display = 'none');
+    }
+
+    function validateField(input) {
+      const value = input.value.trim();
+      if (!value) {
+        showError(input, 'required');
+        return false;
+      }
+      if (input === emailInput) {
+        if (!emailRegex.test(value)) {
+          showError(input, 'invalid');
+          return false;
+        }
+      }
+      clearError(input);
+      return true;
+    }
+
+    function updateSubmitState() {
+      const allValid = fields.every(input => {
+        const value = input.value.trim();
+        if (!value) return false;
+        if (input === emailInput) {
+          return emailRegex.test(value);
+        }
+        return true;
+      });
+      submitBtn.disabled = !allValid;
+    }
+
+    fields.forEach(input => {
+      input.addEventListener('input', () => {
+        validateField(input);
+        updateSubmitState();
+        successMessage.style.display = 'none';
+      });
+      input.addEventListener('blur', () => {
+        validateField(input);
+        updateSubmitState();
+      });
+    });
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      let formValid = true;
+      fields.forEach(input => {
+        const valid = validateField(input);
+        if (!valid) formValid = false;
+      });
+      updateSubmitState();
+      if (!formValid) return;
+
+      // No backend: just log to console and show success
+      console.log('Contact form data:', {
+        name: nameInput.value.trim(),
+        company: companyInput.value.trim(),
+        email: emailInput.value.trim(),
+        phone: phoneInput.value.trim(),
+        message: messageInput.value.trim()
+      });
+
+      form.reset();
+      fields.forEach(clearError);
+      updateSubmitState();
+      successMessage.style.display = 'block';
+    });
+  </script>
+</body>
+</html>
