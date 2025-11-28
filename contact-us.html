@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -284,21 +285,21 @@
       document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
         const value = (window.I18N && window.I18N[targetLang] && window.I18N[targetLang][key]) || '';
-        if(value){
-          if(el.tagName.toLowerCase()==='input' || el.tagName.toLowerCase()==='textarea'){
+        if (value) {
+          if (el.tagName.toLowerCase() === 'input' || el.tagName.toLowerCase() === 'textarea') {
             el.setAttribute('placeholder', value);
-          }else{
+          } else {
             el.innerHTML = value;
           }
         }
       });
-      btnEn.classList.toggle('active', targetLang==='en');
-      btnEs.classList.toggle('active', targetLang==='es');
+      btnEn.classList.toggle('active', targetLang === 'en');
+      btnEs.classList.toggle('active', targetLang === 'es');
       localStorage.setItem('UL_LANG', targetLang);
     };
 
-    btnEn.addEventListener('click', ()=>applyLanguage('en'));
-    btnEs.addEventListener('click', ()=>applyLanguage('es'));
+    btnEn.addEventListener('click', () => applyLanguage('en'));
+    btnEs.addEventListener('click', () => applyLanguage('es'));
     const stored = localStorage.getItem('UL_LANG') || 'en';
     applyLanguage(stored);
 
@@ -375,8 +376,10 @@
       });
     });
 
-    form.addEventListener('submit', (e) => {
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
+      successMessage.style.display = 'none';
+
       let formValid = true;
       fields.forEach(input => {
         const valid = validateField(input);
@@ -385,19 +388,52 @@
       updateSubmitState();
       if (!formValid) return;
 
-      // No backend: just log to console and show success
-      console.log('Contact form data:', {
+      // Disable button & show "sending" state
+      const originalText = submitBtn.textContent;
+      submitBtn.disabled = true;
+      submitBtn.textContent = currentLang === 'es' ? 'Enviando...' : 'Sending...';
+
+      const payload = {
         name: nameInput.value.trim(),
         company: companyInput.value.trim(),
         email: emailInput.value.trim(),
         phone: phoneInput.value.trim(),
         message: messageInput.value.trim()
-      });
+      };
 
-      form.reset();
-      fields.forEach(clearError);
-      updateSubmitState();
-      successMessage.style.display = 'block';
+      try {
+        const res = await fetch('/api/contact', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(payload)
+        });
+
+        if (!res.ok) {
+          throw new Error('Non-OK response');
+        }
+
+        const data = await res.json().catch(() => ({}));
+        if (!data.success) {
+          throw new Error('Backend reported failure');
+        }
+
+        // On success: reset form and show success message
+        form.reset();
+        fields.forEach(clearError);
+        updateSubmitState();
+        successMessage.style.display = 'block';
+      } catch (err) {
+        console.error('Error sending contact form:', err);
+        const msgEn = 'There was an error sending your message. Please try again later.';
+        const msgEs = 'Ha ocurrido un error al enviar tu mensaje. Por favor, inténtalo de nuevo más tarde.';
+        alert(currentLang === 'es' ? msgEs : msgEn);
+      } finally {
+        // Restore button
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalText;
+      }
     });
   </script>
 </body>
