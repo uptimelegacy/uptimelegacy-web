@@ -1,0 +1,57 @@
+[
+  {
+    "slug": "allen-bradley",
+    "name": "ALLEN BRADLEY",
+    "url": "https://www.obsoautomation.com/brand/allen-bradley/"
+  },
+  {
+    "slug": "siemens",
+    "name": "SIEMENS",
+    "url": "https://www.obsoautomation.com/brand/siemens/"
+  },
+  {
+    "slug": "lenze",
+    "name": "LENZE",
+    "url": "https://www.obsoautomation.com/brand/lenze/"
+  },
+  {
+    "slug": "schneider",
+    "name": "SCHNEIDER",
+    "url": "https://www.obsoautomation.com/brand/schneider/"
+  },
+  {
+    "slug": "mitsubishi",
+    "name": "MITSUBISHI",
+    "url": "https://www.obsoautomation.com/brand/mitsubishi/"
+  },
+  {
+    "slug": "indramat",
+    "name": "INDRAMAT",
+    "url": "https://www.obsoautomation.com/brand/indramat/"
+  },
+  {
+    "slug": "abb",
+    "name": "ABB",
+    "url": "https://www.obsoautomation.com/brand/abb/"
+  },
+  {
+    "slug": "beijer",
+    "name": "BEIJER ELECTRONICS",
+    "url": "https://www.obsoautomation.com/brand/beijer/"
+  },
+  {
+    "slug": "leroy-somer",
+    "name": "LEROY SOMER",
+    "url": "https://www.obsoautomation.com/brand/leroy-somer/"
+  },
+  {
+    "slug": "omron",
+    "name": "OMRON",
+    "url": "https://www.obsoautomation.com/brand/omron/"
+  },
+  {
+    "slug": "yaskawa",
+    "name": "YASKAWA",
+    "url": "https://www.obsoautomation.com/brand/yaskawa/"
+  }
+]

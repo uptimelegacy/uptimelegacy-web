@@ -1,0 +1,19 @@
+{
+  "name": "uptimelegacy-etl",
+  "private": true,
+  "type": "module",
+  "version": "0.1.0",
+  "description": "Scraper + CSV export ready for Neon import (manufacturers & products).",
+  "scripts": {
+    "scrape": "node scrape.mjs",
+    "scrape:all": "MAX_PAGES=0 node scrape.mjs",
+    "scrape:demo": "MAX_PAGES=1 node scrape.mjs"
+  },
+  "dependencies": {
+    "playwright": "^1.48.0",
+    "p-limit": "^5.0.0",
+    "slugify": "^1.6.6",
+    "@neondatabase/serverless": "^0.9.0"
+  }
+}
+
