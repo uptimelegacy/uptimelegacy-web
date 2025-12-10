@@ -1,5 +1,6 @@
 {
   "rewrites": [
-    { "source": "/brands/:slug", "destination": "/brand.html?slug=:slug" }
+    { "source": "/brands/:slug",  "destination": "/brand.html?slug=:slug" },
+    { "source": "/brands/:slug/", "destination": "/brand.html?slug=:slug" }
   ]
 }
