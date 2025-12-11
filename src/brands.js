@@ -5,6 +5,7 @@ const featured = byId('featured');
 const list = byId('brand-list');
 const q = byId('q');
 const alpha = byId('alpha');
+const listSection = document.getElementById('list-section');
 
 // === 1) Featured estáticas (mismas que en Home, desagregando ABB/Lenze/Yaskawa) ===
 const FEATURED_BRANDS = [
@@ -49,7 +50,8 @@ async function load() {
   all = data; // [{slug,name}]
   // IMPORTANTE: featured ahora se pinta de la constante, NO de data
   renderFeatured();
-  render(all);
+  //render(all);
+  render([]);
 }
 
 // para la lista (DB)
@@ -60,13 +62,23 @@ function brandCardDB(b) {
   return a;
 }
 function render(arr) {
+  //list.innerHTML = '';
+  //arr.forEach(b => list.appendChild(brandCardDB(b)));
   list.innerHTML = '';
+  if (!arr || arr.length === 0) {
+    if (listSection) listSection.hidden = true;
+    return;
+  }
   arr.forEach(b => list.appendChild(brandCardDB(b)));
+  if (listSection) listSection.hidden = false;
 }
 
 // buscador (DB)
 q?.addEventListener('input', (e) => {
-  const s = e.target.value.toLowerCase();
+  //const s = e.target.value.toLowerCase();
+  //render(all.filter(x => x.name.toLowerCase().includes(s) || x.slug.includes(s)));
+  const s = e.target.value.trim().toLowerCase();
+  if (!s) { render([]); return; } // nada escrito → nada mostrado
   render(all.filter(x => x.name.toLowerCase().includes(s) || x.slug.includes(s)));
 });
 
