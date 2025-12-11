@@ -1,4 +1,5 @@
 // src/brand-detail.js
+
 function getSlugFromQueryOrPath(){
   const u = new URL(location.href);
   const slug = u.searchParams.get('slug');
@@ -8,30 +9,56 @@ function getSlugFromQueryOrPath(){
 }
 const slug = getSlugFromQueryOrPath();
 
+function esc(s=''){
+  return String(s)
+    .replaceAll('&','&amp;')
+    .replaceAll('<','&lt;')
+    .replaceAll('>','&gt;')
+    .replaceAll('"','&quot;')
+    .replaceAll("'",'&#39;');
+}
+
+function availabilityClass(text){
+  const t = (text || '').toString().trim().toLowerCase();
+  if (t === 'y' || t.includes('available') || t.includes('in stock')) return 'is-available';
+  return 'is-unavailable';
+}
+function availabilityLabel(text){
+  const t = (text || '').toString().trim().toLowerCase();
+  return (t === 'y' || t.includes('available') || t.includes('in stock')) ? 'Available' : 'Not available';
+}
+
+function productCard(p){
+  const part = p.part_number || p.title || 'N/A';
+  const availText = availabilityLabel(p.availability);
+  const availCls = availabilityClass(p.availability);
+  const imgSrc = '/img/placeholders/product-servo.png'; // placeholder común
+
+  return `
+    <article class="product-card">
+      <img class="product-thumb" src="${imgSrc}" alt="Product image">
+      <h3 class="part-number">${esc(part)}</h3>
+      <span class="availability-pill ${availCls}">${esc(availText)}</span>
+      <a class="btn-outline" href="#quote">Request a quote</a>
+    </article>
+  `;
+}
+
 async function load() {
   const res = await fetch(`/api/brands/${slug}`);
-  if (!res.ok) { document.getElementById('brand-title').textContent = 'Brand not found'; return; }
+  if (!res.ok) {
+    document.getElementById('brand-title').textContent = 'Brand not found';
+    return;
+  }
   const data = await res.json(); // {brand:{slug,name}, products:[...]}
   document.title = `${data.brand.name} | UptimeLegacy`;
   document.getElementById('brand-title').textContent = data.brand.name;
 
   const grid = document.getElementById('product-grid');
-  grid.innerHTML = '';
-  data.products.forEach(p => {
-    const div = document.createElement('div'); div.className='card';
-    const h3 = document.createElement('h3'); h3.textContent = p.title || p.part_number;
-    const badge = document.createElement('span');
-    const isY = (p.availability||'').trim().toUpperCase()==='Y';
-    badge.className = 'badge ' + (isY ? 'ok' : 'no');
-    badge.textContent = isY ? 'Available' : 'Not available';
-    const btn = document.createElement('button'); btn.className='btn'; btn.textContent='Request a quote';
-    btn.onclick = ()=> alert(`(TODO) Open modal for ${p.part_number}`);
-    div.append(h3, badge, btn);
-    grid.appendChild(div);
-  });
+  grid.innerHTML = data.products.map(productCard).join('');
 }
 
-// lang toggler (reutiliza el diccionario)
+// Lang toggler (conserva tu comportamiento actual)
 const btnEn = document.getElementById('btn-en');
 const btnEs = document.getElementById('btn-es');
 function applyLanguage(lang){

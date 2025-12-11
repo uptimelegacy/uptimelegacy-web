@@ -85,7 +85,7 @@
     .who-we-serve .who-we-serve-content{max-width:900px;margin:0 auto;text-align:center;color:#475569}
 
     .brands-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:24px}
-    .brand-item{text-align:center;padding:18px;background:#fff;border:1px solid #e5e9ef;border-radius:10px;color:var(--primary);font-weight:700;min-height:86px;display:flex;align-items:center;justify-content:center}
+    .brand-item{text-align:center;padding:18px;background:#fff;border:1px solid #e5e9ef;border-radius:10px;color:var(--primary);font-weight:700;min-height:86px;display:flex;align-items:center;justify-content:center;text-decoration:none}
 
     .product-categories{background:var(--muted-2)}
     .categories-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
@@ -228,13 +228,15 @@
       <div class="container">
         <h2 class="section-title" data-i18n="brands.title">Trusted brands we support</h2>
         <p class="section-intro" data-i18n="brands.intro">We work with a broad network of partners to find both current-line and obsolete parts from leading industrial automation brands. Whether you need a legacy CPU, a discontinued drive or a replacement HMI, we can help you source the right OEM component.</p>
-        <div class="brands-grid">
-          <div class="brand-item">Siemens</div>
-          <div class="brand-item">Allen-Bradley</div>
-          <div class="brand-item">Schneider Electric</div>
-          <div class="brand-item">Mitsubishi Electric</div>
-          <div class="brand-item">Omron</div>
-          <div class="brand-item">ABB / Lenze / Yaskawa</div>
+        <div class="brands-grid" id="home-featured-brands">
+          <a class="brand-item" data-label="Siemens">Siemens</a>
+          <a class="brand-item" data-label="Allen-Bradley">Allen-Bradley</a>
+          <a class="brand-item" data-label="Schneider Electric">Schneider Electric</a>
+          <a class="brand-item" data-label="Mitsubishi Electric">Mitsubishi Electric</a>
+          <a class="brand-item" data-label="Omron">Omron</a>
+          <a class="brand-item" data-label="ABB">ABB</a>
+          <a class="brand-item" data-label="Lenze">Lenze</a>
+          <a class="brand-item" data-label="Yaskawa">Yaskawa</a>
         </div>
         <div class="view-all-btn" style="text-align:center;margin-top:14px">
           <a href="/brands" data-i18n="brands.viewAll">View all brands →</a>
@@ -510,5 +512,49 @@
     const stored = localStorage.getItem('UL_LANG') || 'en';
     applyLanguage(stored);
   </script>
+  <script>
+  (async function(){
+    const grid = document.getElementById('home-featured-brands');
+    if(!grid) return;
+
+    // normaliza texto (minúsculas, sin acentos, espacios sencillos)
+    const normalize = (s) => s
+      .toLowerCase()
+      .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+      .replace(/\s+/g, ' ')
+      .trim();
+
+    // slug de respaldo si no encontramos en DB
+    const slugify = (s) => normalize(s).replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
+
+    // overrides para casos donde el nombre visible no coincide 1:1 con manufacturers.name
+    const NAME_TO_SLUG_OVERRIDE = {
+      'schneider electric': 'schneider',
+      'mitsubishi electric': 'mitsubishi'
+      // el resto coinciden con su slug (siemens, omron, abb, lenze, yaskawa, allen-bradley)
+    };
+
+    // construye diccionario name->slug desde /api/brands
+    let nameToSlug = {};
+    try {
+      const res = await fetch('/api/brands');
+      const data = await res.json(); // [{ name, slug }]
+      data.forEach(b => {
+        nameToSlug[ normalize(b.name) ] = b.slug;
+      });
+    } catch (e) {
+      console.warn('Could not load /api/brands; using slugify fallback', e);
+    }
+
+    // asigna href a cada card de marca
+    grid.querySelectorAll('.brand-item').forEach(a => {
+      const label = a.getAttribute('data-label') || a.textContent;
+      const key = normalize(label);
+      const slug = NAME_TO_SLUG_OVERRIDE[key] || nameToSlug[key] || slugify(label);
+      a.href = `/brands/${slug}`;
+    });
+  })();
+  </script>
+
 </body>
 </html>
