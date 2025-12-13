@@ -1,74 +1,96 @@
-// src/brand-detail.js
+// Lee slug desde ?slug=... y, si no llega, desde /brands/:slug
+const params = new URLSearchParams(location.search);
+let slug = params.get('slug') || '';
 
-function getSlugFromQueryOrPath(){
-  const u = new URL(location.href);
-  const slug = u.searchParams.get('slug');
-  if (slug) return slug;
-  const parts = u.pathname.split('/').filter(Boolean);
-  return parts[parts.length-1]; // /brands/:slug -> slug
-}
-const slug = getSlugFromQueryOrPath();
-
-function esc(s=''){
-  return String(s)
-    .replaceAll('&','&amp;')
-    .replaceAll('<','&lt;')
-    .replaceAll('>','&gt;')
-    .replaceAll('"','&quot;')
-    .replaceAll("'",'&#39;');
+if (!slug) {
+  const m = location.pathname.match(/\/brands\/([^/?#]+)/i);
+  slug = m ? decodeURIComponent(m[1]) : '';
 }
 
-function availabilityClass(text){
-  const t = (text || '').toString().trim().toLowerCase();
-  if (t === 'y' || t.includes('available') || t.includes('in stock')) return 'is-available';
-  return 'is-unavailable';
-}
-function availabilityLabel(text){
-  const t = (text || '').toString().trim().toLowerCase();
-  return (t === 'y' || t.includes('available') || t.includes('in stock')) ? 'Available' : 'Not available';
+const titleEl = document.getElementById('brand-title');
+const grid = document.getElementById('products-grid');
+
+// Título provisional mientras carga
+titleEl.textContent = slug || 'brand';
+
+// ✅ Placeholder correcto (tu archivo real)
+const PLACEHOLDER = '/img/placeholders/product-thumb.png';
+
+// Escape simple para inyectar texto seguro en HTML
+const esc = (s = '') =>
+  String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+
+// Normaliza disponibilidad a boolean + texto
+function normalizeAvailability(v) {
+  const val = String(v ?? '').trim().toLowerCase();
+
+  // Casos "disponible"
+  if (
+    val === 'y' || val === 'yes' || val === '1' || val === 'true' ||
+    val.includes('avail') || val.includes('in stock')
+  ) {
+    return { ok: true, label: 'Available' };
+  }
+
+  // Casos "no disponible"
+  if (
+    val === 'n' || val === 'no' || val === '0' || val === 'false' ||
+    val.includes('unavail') || val.includes('out of stock')
+  ) {
+    return { ok: false, label: 'Unavailable' };
+  }
+
+  // Valor vacío o desconocido: por ahora lo tratamos como disponible
+  return { ok: true, label: 'Available' };
 }
 
-function productCard(p){
-  const part = p.part_number || p.title || 'N/A';
-  const availText = availabilityLabel(p.availability);
-  const availCls = availabilityClass(p.availability);
-  const imgSrc = '/img/placeholders/product-servo.png'; // placeholder común
+// Dibuja una card vertical/angosta (4 por fila, misma UI)
+const renderCard = (p) => {
+  const part = esc(p.part_number || p.part || p.title || '');
+  const { ok, label } = normalizeAvailability(p.availability);
 
   return `
     <article class="product-card">
-      <img class="product-thumb" src="${imgSrc}" alt="Product image">
-      <h3 class="part-number">${esc(part)}</h3>
-      <span class="availability-pill ${availCls}">${esc(availText)}</span>
-      <a class="btn-outline" href="#quote">Request a quote</a>
+      <div class="thumb-wrap">
+        <img class="product-thumb" src="${PLACEHOLDER}" alt="Product image" loading="lazy">
+      </div>
+      <h3 class="part-number">${part}</h3>
+      <span class="availability-pill ${ok ? 'is-available' : 'is-unavailable'}">${esc(label)}</span>
+      <a class="btn-outline" href="/contact-us.html#rfq">Request a quote</a>
     </article>
   `;
-}
+};
 
 async function load() {
-  const res = await fetch(`/api/brands/${slug}`);
-  if (!res.ok) {
-    document.getElementById('brand-title').textContent = 'Brand not found';
+  if (!slug) {
+    grid.innerHTML = `<p>We couldn't detect a brand slug.</p>`;
     return;
   }
-  const data = await res.json(); // {brand:{slug,name}, products:[...]}
-  document.title = `${data.brand.name} | UptimeLegacy`;
-  document.getElementById('brand-title').textContent = data.brand.name;
 
-  const grid = document.getElementById('product-grid');
-  grid.innerHTML = data.products.map(productCard).join('');
-}
+  try {
+    // Tu endpoint: devuelve { brand, products: [...] }
+    const res = await fetch(`/api/brands/${encodeURIComponent(slug)}`);
+    if (!res.ok) throw new Error(`API ${res.status}`);
+    const data = await res.json();
 
-// Lang toggler (conserva tu comportamiento actual)
-const btnEn = document.getElementById('btn-en');
-const btnEs = document.getElementById('btn-es');
-function applyLanguage(lang){
-  document.documentElement.lang = lang === 'es' ? 'es' : 'en';
-  btnEn?.classList.toggle('active', lang==='en');
-  btnEs?.classList.toggle('active', lang==='es');
-  localStorage.setItem('UL_LANG', lang);
+    // Título robusto: acepta string u objeto con name/label
+    const brandName =
+      (typeof data.brand === 'string' && data.brand) ||
+      data.brand?.name ||
+      data.brand?.label ||
+      slug;
+    titleEl.textContent = String(brandName).toLowerCase();
+
+    const items = Array.isArray(data.products) ? data.products : [];
+    if (!items.length) {
+      grid.innerHTML = `<p>No products found for this brand yet.</p>`;
+      return;
+    }
+    grid.innerHTML = items.map(renderCard).join('');
+  } catch (err) {
+    console.error('Error loading brand products', err);
+    grid.innerHTML = `<p>We couldn't load this brand right now. Please try again later.</p>`;
+  }
 }
-btnEn?.addEventListener('click', ()=>applyLanguage('en'));
-btnEs?.addEventListener('click', ()=>applyLanguage('es'));
-applyLanguage(localStorage.getItem('UL_LANG')||'en');
 
 load();

@@ -8,8 +8,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="/img/favicon-sinfondo.png"/>
   <style>
-    /* === mismos tokens/estilos base que index.html === */
     :root{--primary:#0A4F8E;--primary-2:#2679B1;--bg:#fff;--muted:#f2f2f2;--muted-2:#f6f9fc;--text:#1e293b}
     *{box-sizing:border-box;margin:0;padding:0} html{scroll-behavior:smooth}
     body{font-family:'Roboto',sans-serif;color:var(--text);background:#fff;line-height:1.5}
@@ -29,7 +29,7 @@
 
     .brand-hero{background:var(--muted-2);padding:48px 0}
     .brands-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:14px}
-    .brand-card{background:#fff;border:1px solid #e5e9ef;border-radius:12px;padding:18px;text-align:center;font-weight:700;color:var(--primary);cursor:pointer}
+    .brand-card{background:#fff;border:1px solid #e5e9ef;border-radius:12px;padding:18px;text-align:center;font-weight:700;color:var(--primary);cursor:pointer;text-decoration:none}
     .brand-card:hover{box-shadow:0 8px 24px rgba(10,79,142,.12);transform:translateY(-2px)}
 
     .search-bar{display:flex;gap:10px;justify-content:center;margin:22px 0 10px}
@@ -38,6 +38,7 @@
     .alpha-filter button{border:1px solid #e2e8f0;background:#fff;padding:6px 10px;border-radius:8px;font-size:12px;cursor:pointer}
     .alpha-filter button.active{background:var(--primary);color:#fff;border-color:var(--primary)}
 
+    /* sección de resultados (oculta hasta que se usa el filtro/búsqueda) */
     .list-wrap{padding:40px 0}
     .list{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
     .list a{display:block;padding:12px 14px;border:1px solid #e5e9ef;border-radius:10px;text-decoration:none;color:#334155;background:#fff}
@@ -58,7 +59,7 @@
   <header>
     <div class="container header-inner">
       <a class="logo-container" href="/" aria-label="UptimeLegacy Home">
-        <img src="img/logo_grande.png" alt="UptimeLegacy Logo">
+        <img src="/img/logo_grande.png" alt="UptimeLegacy Logo">
       </a>
       <nav>
         <a href="/" data-i18n="nav.home">Home</a>
@@ -80,10 +81,11 @@
       <div class="container">
         <h1 class="section-title" data-i18n="brands.title">Trusted brands we support</h1>
         <p class="section-intro" data-i18n="brands.intro">We work with a broad network of partners to find both current-line and obsolete parts from leading industrial automation brands.</p>
-        <!-- mismas “featured” de la home -->
+
+        <!-- featured (estáticas) -->
         <div class="brands-grid" id="featured"></div>
 
-        <!-- buscador + A-Z -->
+        <!-- buscador + A-Z (DB) -->
         <div class="search-bar">
           <input id="q" type="search" placeholder="Search brands…" aria-label="Search brands">
         </div>
@@ -91,6 +93,7 @@
       </div>
     </section>
 
+    <!-- resultados desde DB (oculto hasta interacción) -->
     <section class="list-wrap" id="list-section" hidden>
       <div class="container">
         <div class="list" id="brand-list" aria-live="polite"></div>
@@ -99,11 +102,11 @@
   </main>
 
   <footer>
-    <div class="container footer-content" id="footerSlots"><!-- mismo footer que index --></div>
+    <div class="container footer-content" id="footerSlots"></div>
     <div class="footer-bottom"><p data-i18n="footer.copy">© 2024 UptimeLegacy. All rights reserved. | No downtime for legacy lines</p></div>
   </footer>
 
-  <script src="src/lang.js"></script>
-  <script src="src/brands.js" type="module"></script>
+  <script src="/src/lang.js"></script>
+  <script src="/src/brands.js" type="module"></script>
 </body>
 </html>
