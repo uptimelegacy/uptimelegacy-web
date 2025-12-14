@@ -1,13 +1,18 @@
 {
   "cleanUrls": true,
-  "rewrites": [
-    { "source": "/brands",        "destination": "/brands/index.html" },
-    { "source": "/brands/",       "destination": "/brands/index.html" },
+  "trailingSlash": false,
 
-    { "source": "/brands/:slug",  "destination": "/brand.html?slug=:slug" },
-    { "source": "/brands/:slug/", "destination": "/brand.html?slug=:slug" }
+  "rewrites": [
+    { "source": "/brands/:slug", "destination": "/brand.html?slug=:slug" },
+    { "source": "/brands",      "destination": "/brands/index.html" }
   ],
-  "redirects": [
-    { "source": "/brand/:slug", "destination": "/brands/:slug", "permanent": false }
+
+  "headers": [
+    {
+      "source": "/brands/:slug",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-store" }
+      ]
+    }
   ]
 }
