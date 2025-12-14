@@ -1,11 +1,7 @@
+
 {
-  "cleanUrls": true,
-  "trailingSlash": false,
-
-  "routes": [
-    { "handle": "filesystem" },
-
-    { "src": "^/brands/?$", "dest": "/brands/index.html" },
-    { "src": "^/brands/([^/]+)/?$", "dest": "/brand.html?slug=$1" }
+  "rewrites": [
+    { "source": "/brands/:slug",  "destination": "/brand.html?slug=:slug" },
+    { "source": "/brands/:slug/", "destination": "/brand.html?slug=:slug" }
   ]
 }
