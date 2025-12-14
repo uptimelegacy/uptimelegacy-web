@@ -1,18 +1,17 @@
 {
   "cleanUrls": true,
   "trailingSlash": false,
-
   "rewrites": [
-    { "source": "/brands/:slug", "destination": "/brand.html?slug=:slug" },
-    { "source": "/brands",      "destination": "/brands/index.html" }
-  ],
+    { "source": "/brands",  "destination": "/brands/index.html" },
+    { "source": "/brands/", "destination": "/brands/index.html" },
 
+    { "source": "/brands/:slug",  "destination": "/brand.html?slug=:slug" },
+    { "source": "/brands/:slug/", "destination": "/brand.html?slug=:slug" }
+  ],
   "headers": [
     {
-      "source": "/brands/:slug",
-      "headers": [
-        { "key": "Cache-Control", "value": "no-store" }
-      ]
+      "source": "/(img|css|js)/(.*)",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
     }
   ]
 }
