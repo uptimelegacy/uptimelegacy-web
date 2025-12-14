@@ -1,17 +1,11 @@
 {
   "cleanUrls": true,
   "trailingSlash": false,
-  "rewrites": [
-    { "source": "/brands",  "destination": "/brands/index.html" },
-    { "source": "/brands/", "destination": "/brands/index.html" },
 
-    { "source": "/brands/:slug",  "destination": "/brand.html?slug=:slug" },
-    { "source": "/brands/:slug/", "destination": "/brand.html?slug=:slug" }
-  ],
-  "headers": [
-    {
-      "source": "/(img|css|js)/(.*)",
-      "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
-    }
+  "routes": [
+    { "handle": "filesystem" },
+
+    { "src": "^/brands/?$", "dest": "/brands/index.html" },
+    { "src": "^/brands/([^/]+)/?$", "dest": "/brand.html?slug=$1" }
   ]
 }
