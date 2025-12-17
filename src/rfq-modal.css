@@ -1,0 +1,243 @@
+/* RFQ Modal (encapsulado) */
+body.ul-rfq-no-scroll { overflow: hidden; }
+
+.ul-rfq-overlay{
+  position:fixed; inset:0;
+  background: rgba(15,23,42,.55);
+  backdrop-filter: blur(3px);
+  z-index:200;
+  display:none;
+}
+
+.ul-rfq-modal{
+  position:fixed; left:50%; top:50%;
+  transform: translate(-50%,-50%);
+  z-index:201;
+  width: min(760px, 92vw);
+  max-height: 90vh;
+  background:#fff;
+  border:1px solid #e5e9ef;
+  border-radius:16px;
+  box-shadow:0 20px 70px rgba(0,0,0,.25);
+  display:none;
+  overflow:hidden;
+}
+
+.ul-rfq-overlay.is-open{ display:block; }
+.ul-rfq-modal.is-open{ display:flex; flex-direction:column; }
+
+.ul-rfq-header{
+  padding:18px 20px;
+  border-bottom:1px solid #e8edf3;
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:16px;
+}
+
+.ul-rfq-title{
+  font-family:'Montserrat',sans-serif;
+  font-size:22px;
+  color:var(--primary);
+  line-height:1.15;
+  margin:0;
+}
+
+.ul-rfq-subtitle{
+  font-size:12px;
+  color:#64748b;
+  text-transform:uppercase;
+  letter-spacing:.7px;
+  margin-top:6px;
+}
+
+.ul-rfq-close{
+  border:1px solid #e2e8f0;
+  background:#fff;
+  width:34px; height:34px;
+  border-radius:10px;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:18px;
+  line-height:1;
+}
+
+.ul-rfq-close:hover{ background:#f3f6fb; }
+
+.ul-rfq-body{
+  padding:18px 20px;
+  overflow:auto;
+}
+
+.ul-rfq-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+}
+
+@media (max-width:680px){
+  .ul-rfq-grid{ grid-template-columns:1fr; }
+  .ul-rfq-modal{ width:94vw; }
+}
+
+.ul-rfq-field label{
+  display:block;
+  font-size:13px;
+  font-weight:700;
+  color:#334155;
+  margin-bottom:6px;
+}
+
+.ul-rfq-req{ color:#b91c1c; font-weight:900; }
+
+.ul-rfq-field input{
+  width:100%;
+  padding:11px 12px;
+  border-radius:10px;
+  border:1px solid #e2e8f0;
+  font-size:14px;
+  outline:none;
+  background:#fff;
+}
+
+.ul-rfq-field input:focus{
+  border-color:var(--primary);
+  box-shadow:0 0 0 3px rgba(10,79,142,.12);
+}
+
+.ul-rfq-field .ul-rfq-error{
+  font-size:12px;
+  color:#b91c1c;
+  margin-top:6px;
+  display:none;
+}
+
+.ul-rfq-field.is-invalid .ul-rfq-error{ display:block; }
+
+.ul-rfq-section-title{
+  font-size:13px;
+  font-weight:800;
+  color:#334155;
+  margin:10px 0 8px;
+}
+
+.ul-rfq-chips{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  padding-top:4px;
+}
+
+.ul-rfq-chip{
+  border:1px solid #e2e8f0;
+  background:#fff;
+  border-radius:999px;
+  padding:7px 10px;
+  font-size:12px;
+  font-weight:800;
+  color:#334155;
+  cursor:pointer;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+}
+
+.ul-rfq-chip.is-active{
+  border-color:var(--primary);
+  color:var(--primary);
+  box-shadow:0 0 0 3px rgba(10,79,142,.10);
+}
+
+.ul-rfq-qty{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.ul-rfq-qty button{
+  width:34px; height:34px;
+  border-radius:10px;
+  border:1px solid #e2e8f0;
+  background:#fff;
+  cursor:pointer;
+  font-weight:900;
+  color:#334155;
+}
+
+.ul-rfq-qty button:hover{ background:#f3f6fb; }
+
+.ul-rfq-qty input{
+  width:82px;
+  text-align:center;
+}
+
+.ul-rfq-terms{
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  margin-top:12px;
+  font-size:13px;
+  color:#475569;
+}
+
+.ul-rfq-terms input{ margin-top:3px; }
+
+.ul-rfq-terms a{
+  color:var(--primary);
+  text-decoration:underline;
+}
+
+.ul-rfq-alert{
+  margin-top:12px;
+  font-size:13px;
+  padding:10px 12px;
+  border-radius:12px;
+  display:none;
+}
+
+.ul-rfq-alert.is-success{
+  display:block;
+  background:#E6F6EA;
+  border:1px solid #CFEBD6;
+  color:#1C7C36;
+}
+
+.ul-rfq-alert.is-error{
+  display:block;
+  background:#FFECEB;
+  border:1px solid #F8CAC7;
+  color:#C0392B;
+}
+
+.ul-rfq-footer{
+  padding:16px 20px;
+  border-top:1px solid #e8edf3;
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:12px;
+}
+
+.ul-rfq-submit{
+  min-width:170px;
+  padding:12px 18px;
+  border-radius:12px;
+  border:2px solid transparent;
+  background:var(--primary);
+  color:#fff;
+  font-weight:900;
+  cursor:pointer;
+}
+
+.ul-rfq-submit:hover{ background:var(--primary-2); }
+
+.ul-rfq-submit:disabled{
+  background:#94a3b8;
+  cursor:not-allowed;
+  opacity:.85;
+}
+
+/* intl-tel-input: que ocupe el ancho del modal */
+.ul-rfq-modal .iti{ width:100%; }

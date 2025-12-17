@@ -112,8 +112,86 @@
     @media (max-width:1100px){.logo-container img{height:78px}nav{gap:28px}nav a{font-size:16px}.hero{min-height:520px}.hero h1{font-size:42px}main{margin-top:112px}}
     @media (max-width:900px){nav{gap:20px}nav a{font-size:15px}.brands-grid{grid-template-columns:repeat(2,1fr)}.categories-grid{grid-template-columns:repeat(2,1fr)}.how-help .tiles{grid-template-columns:repeat(2,1fr)}.benefits-grid{grid-template-columns:1fr}.stories-grid{grid-template-columns:1fr}.insights-grid{grid-template-columns:repeat(2,1fr)}.footer-content{grid-template-columns:repeat(2,1fr)}}
     @media (max-width:560px){nav{gap:16px}nav a{font-size:14px}.categories-grid,.brands-grid,.how-help .tiles,.insights-grid{grid-template-columns:1fr}.hero h1{font-size:30px}.logo-container img{height:64px}main{margin-top:104px}}
+
+    .footer-2cols{
+      grid-template-columns: 1.2fr 1fr 1fr;
+    }
+
+    .footer-contact{
+      font-size:13px;
+      color:#94a3b8;
+    }
+
+    .footer-contact-item{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      margin-bottom:10px;
+    }
+
+    .footer-contact-item i{
+      font-size:16px;
+      color:#cbd5e1;
+    }
+
+    .footer-contact-address{
+      margin-top:12px;
+      line-height:1.5;
+    }
+
+    .footer-disabled{
+      display:block;
+      font-size:13px;
+      color:#64748b;
+      margin-bottom:6px;
+      cursor:default;
+    }
+
+    @media (max-width:900px){
+      .footer-2cols{
+        grid-template-columns:1fr 1fr;
+      }
+    }
+
+    @media (max-width:560px){
+      .footer-2cols{
+        grid-template-columns:1fr;
+      }
+    }
+
   </style>
 </head>
+  <script type="module">
+    import { buildNameToSlugMap, slugifyFallback } from '/src/slug-resolver.js';
+
+    const FOOTER_BRANDS = [
+      "Siemens",
+      "Allen-Bradley",
+      "Schneider Electric",
+      "Mitsubishi Electric",
+      "Omron",
+      "ABB",
+      "Lenze",
+      "Yaskawa"
+    ];
+
+    (async () => {
+      const container = document.getElementById('footer-brands');
+      if (!container) return;
+
+      const map = await buildNameToSlugMap();
+
+      FOOTER_BRANDS.forEach(name => {
+        const key = name.toLowerCase();
+        const slug = map[key] || slugifyFallback(name);
+        const a = document.createElement('a');
+        a.href = `/brands/${slug}`;
+        a.textContent = name;
+        container.appendChild(a);
+      });
+    })();
+  </script>
+
 <body>
   <header>
     <div class="container header-inner">
@@ -198,44 +276,48 @@
   </main>
 
   <footer>
-    <div class="container footer-content">
-      <div class="footer-section">
-        <h3 data-i18n="footer.products">Products</h3>
-        <a href="#" data-i18n="footer.p1">PLCs & I/O</a>
-        <a href="#" data-i18n="footer.p2">HMIs & PCs</a>
-        <a href="#" data-i18n="footer.p3">Drives & Inverters</a>
-        <a href="#" data-i18n="footer.p4">Motors & Servos</a>
-        <a href="#" data-i18n="footer.p5">CNC Controllers</a>
-        <a href="#" data-i18n="footer.p6">Safety Devices</a>
+    <div class="container footer-content footer-2cols">
+      
+      <!-- CONTACT BLOCK -->
+      <div class="footer-contact">
+        <div class="footer-contact-item">
+          <i class="ri-phone-line"></i>
+          <span>ES +34 111 111 111</span>
+        </div>
+        <div class="footer-contact-item">
+          <i class="ri-mail-line"></i>
+          <span>info@uptimelegacy.com</span>
+        </div>
+        <div class="footer-contact-address" data-i18n="footer.address">
+          UptimeLegacy Ltd.<br>
+          Lorem ipsum dolor sit amet,<br>
+          Consectetur adipiscing elit
+        </div>
       </div>
+
+      <!-- BRANDS -->
       <div class="footer-section">
         <h3 data-i18n="footer.brands">Brands</h3>
-        <a href="#">Siemens</a>
-        <a href="#">Allen-Bradley</a>
-        <a href="#">Schneider Electric</a>
-        <a href="#">Mitsubishi</a>
-        <a href="#">Omron</a>
-        <a href="#">ABB / Lenze</a>
+        <div id="footer-brands"></div>
       </div>
+
+      <!-- RESOURCES -->
       <div class="footer-section">
         <h3 data-i18n="footer.resources">Resources</h3>
-        <a href="#" data-i18n="footer.r1">Guides & Checklists</a>
-        <a href="#" data-i18n="footer.r2">Blog & Insights</a>
-        <a href="#" data-i18n="footer.r3">Case Studies</a>
-        <a href="#" data-i18n="footer.r4">FAQ</a>
-        <a href="#" data-i18n="footer.r5">Support</a>
+        <a href="contact-us.html" data-i18n="footer.contact">Contact Us</a>
+        <span class="footer-disabled" data-i18n="footer.payments">Payments</span>
+        <span class="footer-disabled" data-i18n="footer.shipping">Shipping</span>
+        <span class="footer-disabled" data-i18n="footer.warranty">Warranty</span>
+        <span class="footer-disabled" data-i18n="footer.returns">Return Policy</span>
+        <span class="footer-disabled" data-i18n="footer.support">Support</span>
       </div>
-      <div class="footer-section">
-        <h3 data-i18n="footer.company">Company</h3>
-        <a href="#" data-i18n="footer.c1">About UptimeLegacy</a>
-        <a href="contact-us.html" data-i18n="footer.c2">Contact Us</a>
-        <a href="#" data-i18n="footer.c3">Privacy Policy</a>
-        <a href="#" data-i18n="footer.c4">Terms & Conditions</a>
-        <a href="#" data-i18n="footer.c5">Cookie Policy</a>
-      </div>
+
     </div>
+
     <div class="footer-bottom">
-      <p><span data-i18n="footer.copy">© 2024 UptimeLegacy. All rights reserved. | No downtime for legacy lines</span></p>
+      <p data-i18n="footer.copy">
+        © 2025 UptimeLegacy. All rights reserved. | No downtime for legacy lines
+      </p>
     </div>
   </footer>
 

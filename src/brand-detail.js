@@ -1,53 +1,62 @@
+import { initRFQModal, openRFQ } from "./rfq-modal.js";
+
 // Lee slug desde ?slug=... y, si no llega, desde /brands/:slug
 const params = new URLSearchParams(location.search);
-let slug = params.get('slug') || '';
+let slug = params.get("slug") || "";
 
 if (!slug) {
   const m = location.pathname.match(/\/brands\/([^/?#]+)/i);
-  slug = m ? decodeURIComponent(m[1]) : '';
+  slug = m ? decodeURIComponent(m[1]) : "";
 }
 
-const titleEl = document.getElementById('brand-title');
-const grid = document.getElementById('products-grid');
+const titleEl = document.getElementById("brand-title");
+const grid = document.getElementById("products-grid");
+
+// Inicializa el modal (idempotente)
+initRFQModal();
 
 // Título provisional mientras carga
-titleEl.textContent = slug || 'brand';
+titleEl.textContent = slug || "brand";
 
 // ✅ Placeholder correcto (tu archivo real)
-const PLACEHOLDER = '/img/placeholders/product-thumb.png';
+const PLACEHOLDER = "/img/placeholders/product-thumb.png";
 
 // Escape simple para inyectar texto seguro en HTML
-const esc = (s = '') =>
-  String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+const esc = (s = "") =>
+  String(s).replace(/[&<>"']/g, (m) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[m]));
+
+// i18n mínimo para el CTA (sin depender de applyLanguage global)
+const getLang = () => localStorage.getItem("UL_LANG") || "en";
+const t = (key, fallback) => window.I18N?.[getLang()]?.[key] || fallback;
 
 // Normaliza disponibilidad a boolean + texto
 function normalizeAvailability(v) {
-  const val = String(v ?? '').trim().toLowerCase();
+  const val = String(v ?? "").trim().toLowerCase();
 
   // Casos "disponible"
-  if (
-    val === 'y' || val === 'yes' || val === '1' || val === 'true' ||
-    val.includes('avail') || val.includes('in stock')
-  ) {
-    return { ok: true, label: 'Available' };
+  if (val === "y" || val === "yes" || val === "1" || val === "true" || val.includes("avail") || val.includes("in stock")) {
+    return { ok: true, label: "Available" };
   }
 
   // Casos "no disponible"
-  if (
-    val === 'n' || val === 'no' || val === '0' || val === 'false' ||
-    val.includes('unavail') || val.includes('out of stock')
-  ) {
-    return { ok: false, label: 'Unavailable' };
+  if (val === "n" || val === "no" || val === "0" || val === "false" || val.includes("unavail") || val.includes("out of stock")) {
+    return { ok: false, label: "Unavailable" };
   }
 
   // Valor vacío o desconocido: por ahora lo tratamos como disponible
-  return { ok: true, label: 'Available' };
+  return { ok: true, label: "Available" };
 }
+
+let currentBrandName = slug || "brand";
 
 // Dibuja una card vertical/angosta (4 por fila, misma UI)
 const renderCard = (p) => {
-  const part = esc(p.part_number || p.part || p.title || '');
+  const rawPart = String(p.part_number || p.part || p.title || "").trim();
+  const part = esc(rawPart);
   const { ok, label } = normalizeAvailability(p.availability);
+
+  const ctaText = esc(t("rfq.cta", "Request a quote"));
+  const manu = esc(currentBrandName);
 
   return `
     <article class="product-card">
@@ -55,11 +64,32 @@ const renderCard = (p) => {
         <img class="product-thumb" src="${PLACEHOLDER}" alt="Product image" loading="lazy">
       </div>
       <h3 class="part-number">${part}</h3>
-      <span class="availability-pill ${ok ? 'is-available' : 'is-unavailable'}">${esc(label)}</span>
-      <a class="btn-outline" href="/contact-us.html#rfq">Request a quote</a>
+      <span class="availability-pill ${ok ? "is-available" : "is-unavailable"}">${esc(label)}</span>
+
+      <!-- RFQ modal trigger -->
+      <a
+        class="btn-outline ul-rfq-trigger"
+        href="#"
+        data-part="${part}"
+        data-manufacturer="${manu}"
+        data-i18n="rfq.cta"
+        aria-label="${ctaText}"
+      >${ctaText}</a>
     </article>
   `;
 };
+
+// Click delegado para abrir modal sin recargar
+grid?.addEventListener("click", (e) => {
+  const btn = e.target.closest(".ul-rfq-trigger");
+  if (!btn) return;
+  e.preventDefault();
+
+  const partNumber = btn.getAttribute("data-part") || "";
+  const manufacturer = btn.getAttribute("data-manufacturer") || currentBrandName || slug || "";
+
+  openRFQ({ partNumber, manufacturer });
+});
 
 async function load() {
   if (!slug) {
@@ -75,10 +105,14 @@ async function load() {
 
     // Título robusto: acepta string u objeto con name/label
     const brandName =
-      (typeof data.brand === 'string' && data.brand) ||
+      (typeof data.brand === "string" && data.brand) ||
       data.brand?.name ||
       data.brand?.label ||
       slug;
+
+    currentBrandName = String(brandName);
+
+    // Mantengo tu comportamiento visual existente (lowercase en H1)
     titleEl.textContent = String(brandName).toLowerCase();
 
     const items = Array.isArray(data.products) ? data.products : [];
@@ -86,9 +120,10 @@ async function load() {
       grid.innerHTML = `<p>No products found for this brand yet.</p>`;
       return;
     }
-    grid.innerHTML = items.map(renderCard).join('');
+
+    grid.innerHTML = items.map(renderCard).join("");
   } catch (err) {
-    console.error('Error loading brand products', err);
+    console.error("Error loading brand products", err);
     grid.innerHTML = `<p>We couldn't load this brand right now. Please try again later.</p>`;
   }
 }
