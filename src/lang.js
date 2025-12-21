@@ -1,4 +1,7 @@
-// Simple i18n dictionary for EN/ES
+// =======================
+// I18N DICTIONARY
+// =======================
+
 window.I18N = {
   en: {
     "nav.home":"Home","nav.products":"Products","nav.brands":"Brands","nav.whyus":"Why Us","nav.resources":"Resources","nav.contact":"Contact",
@@ -83,6 +86,15 @@ window.I18N = {
     "footer.support":"Support",
     "footer.address":"UptimeLegacy Ltd.<br>Lorem ipsum dolor sit amet,<br>Consectetur adipiscing elit",
     "footer.copy":"© 2025 UptimeLegacy. All rights reserved. | No downtime for legacy lines",
+
+    "faq.title": "Frequently Asked Questions",
+    "faq.back": "Back to home",
+
+    "faq.payments": "Payments",
+    "faq.shipping": "Shipping",
+    "faq.returns": "Returns",
+    "faq.warranty": "Warranty",
+
 
   },
   es: {
@@ -169,5 +181,72 @@ window.I18N = {
     "footer.address":"UptimeLegacy Ltd.<br>Lorem ipsum dolor sit amet,<br>Consectetur adipiscing elit",
     "footer.copy":"© 2025 UptimeLegacy. Todos los derechos reservados. | Cero paradas en líneas legacy",
 
+    "faq.title": "Preguntas Frecuentes",
+    "faq.back": "Volver al inicio",
+
+    "faq.payments": "Pagos",
+    "faq.shipping": "Envíos",
+    "faq.returns": "Devoluciones",
+    "faq.warranty": "Garantía",
+
+
   }
 };
+
+
+// =======================
+// I18N ENGINE
+// =======================
+(function () {
+  const STORAGE_KEY = 'lang';
+  const DEFAULT_LANG = 'en';
+
+  function getLang() {
+    return localStorage.getItem(STORAGE_KEY) || DEFAULT_LANG;
+  }
+
+  function applyLanguage(lang) {
+    const dict = window.I18N[lang];
+    if (!dict) return;
+
+    document.documentElement.setAttribute('lang', lang);
+
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.dataset.i18n;
+      const value = dict[key];
+      if (!value) return;
+
+      if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+        el.placeholder = value;
+      } else {
+        el.innerHTML = value;
+      }
+    });
+
+    document.querySelectorAll('[data-lang]').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.lang === lang);
+    });
+
+    localStorage.setItem(STORAGE_KEY, lang);
+
+    // 🔔 evento global (CLAVE)
+    window.dispatchEvent(
+      new CustomEvent('languageChanged', { detail: lang })
+    );
+  }
+
+  // Click en botones EN / ES
+  document.addEventListener('click', e => {
+    const btn = e.target.closest('[data-lang]');
+    if (!btn) return;
+    applyLanguage(btn.dataset.lang);
+  });
+
+  // Init global
+  document.addEventListener('DOMContentLoaded', () => {
+    applyLanguage(getLang());
+  });
+
+  // Exponer por si hace falta
+  window.setLanguage = applyLanguage;
+})();

@@ -308,10 +308,10 @@
       <div class="footer-section">
         <h3 data-i18n="footer.resources">Resources</h3>
         <a href="contact-us.html" data-i18n="footer.contact">Contact Us</a>
-        <span class="footer-disabled" data-i18n="footer.payments">Payments</span>
-        <span class="footer-disabled" data-i18n="footer.shipping">Shipping</span>
-        <span class="footer-disabled" data-i18n="footer.warranty">Warranty</span>
-        <span class="footer-disabled" data-i18n="footer.returns">Return Policy</span>
+        <a href="/faq.html#payments" data-i18n="footer.payments">Payments</a>
+        <a href="/faq.html#shipping" data-i18n="footer.shipping">Shipping</a>
+        <a href="/faq.html#warranty" data-i18n="footer.warranty">Warranty</a>
+        <a href="/faq.html#returns" data-i18n="footer.returns">Return Policy</a>
         <span class="footer-disabled" data-i18n="footer.support">Support</span>
       </div>
 
@@ -325,15 +325,16 @@
   </footer>
 
   <script src="src/lang.js"></script>
-  <script>
+  <script >
     // Switch de idioma homogéneo
-    const btnEn=document.getElementById('btn-en');const btnEs=document.getElementById('btn-es');
+    /*const btnEn=document.getElementById('btn-en');const btnEs=document.getElementById('btn-es');
     const applyLanguage=(lang)=>{document.documentElement.setAttribute('lang',lang==='es'?'es':'en');
       document.querySelectorAll('[data-i18n]').forEach(el=>{const k=el.getAttribute('data-i18n');
         const v=(window.I18N&&window.I18N[lang]&&window.I18N[lang][k])||'';if(v){if(/^(input|textarea)$/i.test(el.tagName))el.setAttribute('placeholder',v);else el.innerHTML=v;}});
       btnEn.classList.toggle('active',lang==='en');btnEs.classList.toggle('active',lang==='es');localStorage.setItem('UL_LANG',lang);}
     btnEn.addEventListener('click',()=>applyLanguage('en'));btnEs.addEventListener('click',()=>applyLanguage('es'));
     applyLanguage(localStorage.getItem('UL_LANG')||'en');
+      */
   </script>
   <script>
   // Home → /brands/:slug
