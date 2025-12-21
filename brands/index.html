@@ -44,6 +44,10 @@
     .list a{display:block;padding:12px 14px;border:1px solid #e5e9ef;border-radius:10px;text-decoration:none;color:#334155;background:#fff}
     .list a:hover{color:var(--primary);border-color:var(--primary)}
 
+
+    @media (max-width:900px){.brands-grid{grid-template-columns:repeat(2,1fr)}.list{grid-template-columns:repeat(2,1fr)}}
+    @media (max-width:560px){.logo-container img{height:64px}.list{grid-template-columns:1fr}nav{gap:16px}nav a{font-size:14px}}
+  
     footer{background:#0f172a;color:#e2e8f0}
     .footer-content{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;padding:48px 0}
     .footer-section h3{font-family:'Montserrat',sans-serif;font-size:14px;margin-bottom:10px;letter-spacing:.6px;text-transform:uppercase;color:#cbd5e1}
@@ -51,10 +55,85 @@
     .footer-section a:hover{color:#fff}
     .footer-bottom{border-top:1px solid #1f2a44;padding:18px 0;text-align:center;font-size:12px;color:#94a3b8}
 
-    @media (max-width:900px){.brands-grid{grid-template-columns:repeat(2,1fr)}.list{grid-template-columns:repeat(2,1fr)}}
-    @media (max-width:560px){.logo-container img{height:64px}.list{grid-template-columns:1fr}nav{gap:16px}nav a{font-size:14px}}
+    .footer-2cols{
+      grid-template-columns: 1.2fr 1fr 1fr;
+    }
+
+    .footer-contact{
+      font-size:13px;
+      color:#94a3b8;
+    }
+
+    .footer-contact-item{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      margin-bottom:10px;
+    }
+
+    .footer-contact-item i{
+      font-size:16px;
+      color:#cbd5e1;
+    }
+
+    .footer-contact-address{
+      margin-top:12px;
+      line-height:1.5;
+    }
+
+    .footer-disabled{
+      display:block;
+      font-size:13px;
+      color:#64748b;
+      margin-bottom:6px;
+      cursor:default;
+    }
+
+    @media (max-width:900px){
+      .footer-2cols{
+        grid-template-columns:1fr 1fr;
+      }
+    }
+
+    @media (max-width:560px){
+      .footer-2cols{
+        grid-template-columns:1fr;
+      }
+    }
+
+  
   </style>
 </head>
+<script type="module">
+  import { buildNameToSlugMap, slugifyFallback } from '/src/slug-resolver.js';
+
+  const FOOTER_BRANDS = [
+    "Siemens",
+    "Allen-Bradley",
+    "Schneider Electric",
+    "Mitsubishi Electric",
+    "Omron",
+    "ABB",
+    "Lenze",
+    "Yaskawa"
+  ];
+
+  (async () => {
+    const container = document.getElementById('footer-brands');
+    if (!container) return;
+
+    const map = await buildNameToSlugMap();
+
+    FOOTER_BRANDS.forEach(name => {
+      const slug = map[name.toLowerCase()] || slugifyFallback(name);
+      const a = document.createElement('a');
+      a.href = `/brands/${slug}`;
+      a.textContent = name;
+      container.appendChild(a);
+    });
+  })();
+</script>
+
 <body>
   <header>
     <div class="container header-inner">
@@ -101,11 +180,54 @@
     </section>
   </main>
 
+ 
   <footer>
-    <div class="container footer-content" id="footerSlots"></div>
-    <div class="footer-bottom"><p data-i18n="footer.copy">© 2024 UptimeLegacy. All rights reserved. | No downtime for legacy lines</p></div>
-  </footer>
+    <div class="container footer-content footer-2cols">
+      
+      <!-- CONTACT BLOCK -->
+      <div class="footer-contact">
+        <div class="footer-contact-item">
+          <i class="ri-phone-line"></i>
+          <span>ES +34 111 111 111</span>
+        </div>
+        <div class="footer-contact-item">
+          <i class="ri-mail-line"></i>
+          <span>info@uptimelegacy.com</span>
+        </div>
+        <div class="footer-contact-address" data-i18n="footer.address">
+          UptimeLegacy Ltd.<br>
+          Lorem ipsum dolor sit amet,<br>
+          Consectetur adipiscing elit
+        </div>
+      </div>
 
+      <!-- BRANDS -->
+      <div class="footer-section">
+        <h3 data-i18n="footer.brands">Brands</h3>
+        <div id="footer-brands"></div>
+      </div>
+
+      <!-- RESOURCES -->
+      <div class="footer-section">
+        <h3 data-i18n="footer.resources">Resources</h3>
+        <a href="contact-us.html" data-i18n="footer.contact">Contact Us</a>
+        <span class="footer-disabled" data-i18n="footer.payments">Payments</span>
+        <span class="footer-disabled" data-i18n="footer.shipping">Shipping</span>
+        <span class="footer-disabled" data-i18n="footer.warranty">Warranty</span>
+        <span class="footer-disabled" data-i18n="footer.returns">Return Policy</span>
+        <span class="footer-disabled" data-i18n="footer.support">Support</span>
+      </div>
+
+    </div>
+
+    
+
+    <div class="footer-bottom">
+      <p data-i18n="footer.copy">
+        © 2025 UptimeLegacy. All rights reserved. | No downtime for legacy lines
+      </p>
+    </div>
+  </footer>
   <script src="/src/lang.js"></script>
   <script src="/src/brands.js" type="module"></script>
 </body>
