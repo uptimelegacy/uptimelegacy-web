@@ -95,6 +95,30 @@ window.I18N = {
     "faq.returns": "Returns",
     "faq.warranty": "Warranty",
 
+    // CONTACT FORM
+    "contact.form.back": "Back to home",
+    "contact.form.title": "Contact UptimeLegacy",
+    "contact.form.intro": "Tell us what you need help with and our team will get back to you as soon as possible.",
+
+    "contact.form.nameLabel": "Name",
+    "contact.form.namePlaceholder": "Your name",
+
+    "contact.form.companyLabel": "Company name",
+    "contact.form.companyPlaceholder": "Your company",
+
+    "contact.form.emailLabel": "Email address",
+    "contact.form.emailPlaceholder": "Your email",
+
+    "contact.form.phoneLabel": "Telephone number",
+    "contact.form.phonePlaceholder": "Your phone number",
+
+    "contact.form.messageLabel": "Message",
+    "contact.form.messagePlaceholder": "How can we help you?",
+
+    "contact.form.submit": "Send message",
+    "contact.form.required": "This field is required",
+    "contact.form.invalidEmail": "Please enter a valid email address",
+    "contact.form.success": "Thanks for your message. We will get back to you shortly."
 
   },
   es: {
@@ -189,6 +213,30 @@ window.I18N = {
     "faq.returns": "Devoluciones",
     "faq.warranty": "Garantía",
 
+    // CONTACT FORM
+    "contact.form.back": "Volver al inicio",
+    "contact.form.title": "Contacta con UptimeLegacy",
+    "contact.form.intro": "Cuéntanos en qué podemos ayudarte y nuestro equipo se pondrá en contacto contigo lo antes posible.",
+
+    "contact.form.nameLabel": "Nombre",
+    "contact.form.namePlaceholder": "Tu nombre",
+
+    "contact.form.companyLabel": "Nombre de la empresa",
+    "contact.form.companyPlaceholder": "Tu empresa",
+
+    "contact.form.emailLabel": "Correo electrónico",
+    "contact.form.emailPlaceholder": "Tu email",
+
+    "contact.form.phoneLabel": "Teléfono",
+    "contact.form.phonePlaceholder": "Tu número de teléfono",
+
+    "contact.form.messageLabel": "Mensaje",
+    "contact.form.messagePlaceholder": "¿En qué podemos ayudarte?",
+
+    "contact.form.submit": "Enviar mensaje",
+    "contact.form.required": "Este campo es obligatorio",
+    "contact.form.invalidEmail": "Introduce un email válido",
+    "contact.form.success": "Gracias por tu mensaje. Te contactaremos en breve."
 
   }
 };
