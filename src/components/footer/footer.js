@@ -11,19 +11,12 @@ const FOOTER_BRANDS = [
   "Yaskawa"
 ];
 
-let rendered = false;
-
-async function renderFooterBrands() {
-  if (rendered) return true;
-
+export async function initFooterBrands() {
   const container = document.getElementById('footer-brands');
-  if (!container) return false;
+  if (!container) return;
 
-  // Seguridad extra: evitar duplicados aunque alguien toque el DOM
-  if (container.children.length > 0) {
-    rendered = true;
-    return true;
-  }
+  // seguridad absoluta
+  container.innerHTML = '';
 
   const map = await buildNameToSlugMap();
 
@@ -35,17 +28,4 @@ async function renderFooterBrands() {
     a.textContent = name;
     container.appendChild(a);
   });
-
-  rendered = true;
-  return true;
 }
-
-const observer = new MutationObserver(async () => {
-  const done = await renderFooterBrands();
-  if (done) observer.disconnect();
-});
-
-observer.observe(document.body, {
-  childList: true,
-  subtree: true
-});

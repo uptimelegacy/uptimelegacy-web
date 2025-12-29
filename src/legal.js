@@ -11,8 +11,14 @@
   }
 
   function getLang() {
+    // 1️⃣ fuente principal: atributo <html lang="">
+    const htmlLang = document.documentElement.lang;
+    if (htmlLang) return htmlLang;
+
+    // 2️⃣ fallback: localStorage
     return localStorage.getItem('lang') || 'en';
   }
+
 
   async function loadLegalContent() {
     const page = getPageKey();
@@ -34,7 +40,10 @@
         block.innerHTML = `
           <h2>${section.title}</h2>
           <div class="legal-content">
-            ${section.content}
+            ${section.content
+            .replace(/<br\s*\/?>/gi, '')
+            .replace(/<p>\s*<\/p>/gi, '')
+            }
           </div>
         `;
 

@@ -215,19 +215,11 @@
   })();
   </script>
 
-  <div id="footer-placeholder"></div>
+ <div id="footer-placeholder"></div>
 
-  <link rel="stylesheet" href="/src/components/footer/footer.css">
+<link rel="stylesheet" href="/src/components/footer/footer.css">
+<script type="module" src="/src/components/footer/footer-loader.js"></script>
 
-  <script>
-    fetch("/src/components/footer/footer.html")
-      .then(r => r.text())
-      .then(html => {
-        document.getElementById("footer-placeholder").innerHTML = html;
-      });
-  </script>
-
-  <script type="module" src="/src/components/footer/footer.js"></script>
 
 </body>
 </html>
