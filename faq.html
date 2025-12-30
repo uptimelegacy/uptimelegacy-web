@@ -26,27 +26,6 @@
     body{font-family:'Roboto',sans-serif;color:var(--text);background:#fff;line-height:1.5}
     .container{max-width:1200px;margin:0 auto;padding:0 24px}
 
-    /* HEADER */
-    header{
-      position:fixed;inset:0 0 auto 0;background:#fff;border-bottom:1px solid #e8edf3;
-      z-index:50;box-shadow:0 2px 6px rgba(10,79,142,.06)
-    }
-    .header-inner{
-      display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px 0;
-    }
-    .logo-container img{
-      height:88px;width:auto;object-fit:contain;
-      filter:drop-shadow(0 2px 2px rgba(0,0,0,.06));
-    }
-    nav{display:flex;gap:44px;align-items:center;flex-wrap:wrap}
-    nav a{text-decoration:none;color:#334155;font-size:19px;font-weight:700}
-    nav a:hover{color:var(--primary)}
-    .lang-switch{display:flex;gap:8px}
-    .lang-switch button{
-      border:1px solid #e2e8f0;background:#fff;
-      padding:6px 10px;border-radius:8px;font-size:12px;cursor:pointer
-    }
-    .lang-switch button.active{background:var(--primary);color:#fff}
 
     main{margin-top:120px}
 
@@ -91,26 +70,8 @@
 
 <body>
 
-  <!-- ✅ HEADER REAL -->
-  <header>
-    <div class="container header-inner">
-      <a class="logo-container" href="index.html#home">
-        <img src="img/logo_grande.png" alt="UptimeLegacy Logo">
-      </a>
-      <nav>
-        <a href="index.html#home" data-i18n="nav.home">Home</a>
-        <a href="index.html#products" data-i18n="nav.products">Products</a>
-        <a href="index.html#brands" data-i18n="nav.brands">Brands</a>
-        <a href="index.html#why-us" data-i18n="nav.whyus">Why Us</a>
-        <a href="index.html#resources" data-i18n="nav.resources">Resources</a>
-        <a href="contact-us.html" data-i18n="nav.contact">Contact</a>
-      </nav>
-      <div class="lang-switch">
-        <button id="btn-en" data-lang="en">EN</button>
-        <button id="btn-es" data-lang="es">ES</button>
-      </div>
-    </div>
-  </header>
+  <div id="header-placeholder"></div>
+
   <main>
     <section class="faq-page">
       <div class="container">
@@ -130,6 +91,8 @@
     </section>
   </main>
 
+<link rel="stylesheet" href="/src/components/header/header.css">
+<script type="module" src="/src/components/header/header-loader.js"></script>
 
 <div id="footer-placeholder"></div>
 
