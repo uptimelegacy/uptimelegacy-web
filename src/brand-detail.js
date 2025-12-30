@@ -31,21 +31,36 @@ const t = (key, fallback) => window.I18N?.[getLang()]?.[key] || fallback;
 
 // Normaliza disponibilidad a boolean + texto
 function normalizeAvailability(v) {
+  const lang = getLang();
   const val = String(v ?? "").trim().toLowerCase();
 
-  // Casos "disponible"
-  if (val === "y" || val === "yes" || val === "1" || val === "true" || val.includes("avail") || val.includes("in stock")) {
-    return { ok: true, label: "Available" };
+  const availableLabel =
+    lang === "es"
+      ? window.I18N?.es?.rfq?.available_es || "Disponible"
+      : window.I18N?.en?.rfq?.available || "Available";
+
+  const unavailableLabel =
+    lang === "es"
+      ? window.I18N?.es?.rfq?.unavailable_es || "No disponible"
+      : window.I18N?.en?.rfq?.unavailable || "Unavailable";
+
+  if (
+    val === "y" || val === "yes" || val === "1" || val === "true" ||
+    val.includes("avail") || val.includes("in stock")
+  ) {
+    return { ok: true, label: availableLabel };
   }
 
-  // Casos "no disponible"
-  if (val === "n" || val === "no" || val === "0" || val === "false" || val.includes("unavail") || val.includes("out of stock")) {
-    return { ok: false, label: "Unavailable" };
+  if (
+    val === "n" || val === "no" || val === "0" || val === "false" ||
+    val.includes("unavail") || val.includes("out of stock")
+  ) {
+    return { ok: false, label: unavailableLabel };
   }
 
-  // Valor vacío o desconocido: por ahora lo tratamos como disponible
-  return { ok: true, label: "Available" };
+  return { ok: true, label: availableLabel };
 }
+
 
 let currentBrandName = slug || "brand";
 

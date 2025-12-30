@@ -246,7 +246,7 @@ window.I18N = {
 // I18N ENGINE
 // =======================
 (function () {
-  const STORAGE_KEY = 'lang';
+  const STORAGE_KEY = 'UL_LANG';
   const DEFAULT_LANG = 'en';
 
   function getLang() {

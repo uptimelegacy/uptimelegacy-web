@@ -192,6 +192,7 @@ export function initRFQModal() {
     <div class="ul-rfq-header">
       <div>
         <h2 class="ul-rfq-title" id="ul-rfq-title"></h2>
+        <div class="ul-rfq-status" data-i18n="product.available">AVAILABLE</div>
         <div class="ul-rfq-subtitle" id="ul-rfq-subtitle"></div>
       </div>
       <button type="button" class="ul-rfq-close" aria-label="Close">×</button>
@@ -413,7 +414,7 @@ export function openRFQ({ partNumber, manufacturer }) {
   _modal.dataset.partNumber = String(partNumber || "").trim();
   _modal.dataset.manufacturer = String(manufacturer || "").trim();
 
-  _titleEl.textContent = _modal.dataset.partNumber || "-";
+  _titleEl.textContent = (_modal.dataset.partNumber || "-").toUpperCase();
   _subtitleEl.textContent = _modal.dataset.manufacturer || "";
 
   applyI18n(_modal);

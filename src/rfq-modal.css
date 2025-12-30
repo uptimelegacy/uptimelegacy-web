@@ -241,3 +241,13 @@ body.ul-rfq-no-scroll { overflow: hidden; }
 
 /* intl-tel-input: que ocupe el ancho del modal */
 .ul-rfq-modal .iti{ width:100%; }
+
+.ul-rfq-status {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .6px;
+  color: #16a34a; /* verde */
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+
