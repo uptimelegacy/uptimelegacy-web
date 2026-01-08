@@ -19,6 +19,9 @@
 
   <!-- RFQ modal styles -->
   <link rel="stylesheet" href="/src/rfq-modal.css">
+  <link rel="stylesheet" href="/src/components/order-quote-modal/order-quote-products.css" />
+  <link rel="stylesheet" href="/src/components/order-quote-modal/order-quote-modal.css" />
+
 
   <style>
     /* === tokens y estilo base (alineados con index/brands) === */
@@ -109,6 +112,26 @@
   </section>
 </main>
 
+<link
+    rel="stylesheet"
+    href="/components/order-quote-modal/order-quote-modal.css"
+  />
+
+  <script src="/assets/js/order-quote-store.js"></script>
+
+<script>
+  fetch('/src/components/order-quote-modal/order-quote-modal.html')
+    .then(r => r.text())
+    .then(html => {
+      document.body.insertAdjacentHTML('beforeend', html);
+
+      const script = document.createElement('script');
+      script.src = '/src/components/order-quote-modal/order-quote-modal.js';
+      document.body.appendChild(script);
+    });
+</script>
+
+
 
 <!-- intl-tel-input JS (solo aquí) -->
 <script defer src="https://cdn.jsdelivr.net/npm/intl-tel-input@19.5.6/build/js/intlTelInput.min.js"></script>
@@ -125,6 +148,33 @@
 
 <link rel="stylesheet" href="/src/components/footer/footer.css">
 <script type="module" src="/src/components/footer/footer-loader.js"></script>
+
+<!-- Order Quote Store -->
+<script src="/assets/js/order-quote-store.js"></script>
+
+<!-- Order Quote Modal Loader -->
+<script>
+  fetch('/src/components/order-quote-modal/order-quote-modal.html')
+    .then(r => r.text())
+    .then(html => {
+      document.body.insertAdjacentHTML('beforeend', html);
+
+      // Modal core
+      const modalScript = document.createElement('script');
+      modalScript.src = '/src/components/order-quote-modal/order-quote-modal.js';
+      document.body.appendChild(modalScript);
+
+      // Products
+      const productsScript = document.createElement('script');
+      productsScript.src = '/src/components/order-quote-modal/order-quote-products.js';
+      document.body.appendChild(productsScript);
+
+      // Attachments
+      const attachmentsScript = document.createElement('script');
+      attachmentsScript.src = '/src/components/order-quote-modal/order-quote-attachments.js';
+      document.body.appendChild(attachmentsScript);
+    });
+</script>
 
 </body>
 </html>

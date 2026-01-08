@@ -1,0 +1,250 @@
+/* =========================
+   ROOT ISOLATION
+========================= */
+.oq-root {
+  all: initial;
+  font-family: inherit;
+}
+
+.oq-root * {
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+/* =========================
+   OVERLAY
+========================= */
+.order-quote-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.55);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* =========================
+   MODAL
+========================= */
+.order-quote-modal {
+  background: #fff;
+  width: 95%;
+  max-width: 1200px;
+  max-height: 90vh;
+  overflow-y: auto;
+  border-radius: 12px;
+  padding: 20px 32px 28px;
+  position: relative;
+  color: #0b3c5d;
+}
+
+/* HEADER */
+.order-quote-title {
+  margin: 0;
+  font-size: 22px;
+}
+
+.oq-title-divider {
+  height: 1px;
+  background: #e2e8f0;
+  margin: 12px 0 20px;
+}
+
+.order-quote-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+}
+
+/* =========================
+   LAYOUT
+========================= */
+.order-quote-top {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 32px;
+}
+
+.oq-section {
+  margin-bottom: 18px;
+}
+
+.oq-section-title {
+  margin: 0 0 8px;
+  font-size: 15px;
+}
+
+/* =========================
+   BUTTONS
+========================= */
+.oq-btn-primary {
+  background: #0b3c5d;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 32px;
+  cursor: pointer;
+}
+
+.oq-btn-add {
+  margin-top: 10px;
+}
+
+/* =========================
+   NOTES
+========================= */
+.oq-textarea {
+  width: 100%;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 12px;
+  min-height: 120px;
+}
+
+/* =========================
+   ATTACHMENTS
+========================= */
+.order-quote-right {
+  position: relative;
+}
+
+.oq-dropzone {
+  border: 2px dashed #cbd5e1;
+  border-radius: 10px;
+  padding: 48px 16px;
+  text-align: center;
+  color: #475569;
+}
+
+.oq-hint {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #64748b;
+}
+
+/* Vertical divider */
+.oq-vertical-divider {
+  position: absolute;
+  left: -16px;
+  top: 0;
+  bottom: 16px;
+  border-left: 1px dashed #cbd5e1;
+}
+
+/* =========================
+   DIVIDERS
+========================= */
+.oq-divider-horizontal {
+  border: none;
+  border-top: 1px solid #e2e8f0;
+  margin: 28px 0 24px;
+}
+
+/* =========================
+   STEPS
+========================= */
+.oq-steps {
+  display: flex;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.oq-step {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #94a3b8;
+  font-weight: 500;
+}
+
+.oq-step.active {
+  color: #0b3c5d;
+}
+
+.oq-step-circle {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 2px solid #94a3b8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.oq-step.active .oq-step-circle {
+  background: #0b3c5d;
+  color: #fff;
+  border-color: #0b3c5d;
+}
+
+.oq-step-line {
+  flex: 1;
+  height: 1px;
+  background: #cbd5e1;
+  margin: 0 24px;
+}
+
+/* =========================
+   FORM
+========================= */
+.oq-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+.oq-form-grid input,
+.oq-form-grid select {
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+}
+
+.oq-phone {
+  display: flex;
+  gap: 8px;
+}
+
+/* =========================
+   ACTIONS
+========================= */
+.oq-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 18px;
+}
+
+.oq-terms a {
+  color: #2563eb;
+}
+
+/* =========================
+   MOBILE
+========================= */
+@media (max-width: 768px) {
+  .order-quote-top {
+    grid-template-columns: 1fr;
+  }
+
+  .oq-vertical-divider {
+    display: none;
+  }
+
+  .oq-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .oq-actions {
+    flex-direction: column;
+    gap: 16px;
+    align-items: stretch;
+  }
+}

@@ -1,0 +1,117 @@
+<div id="order-quote-overlay" class="order-quote-overlay" style="display:none;">
+  <div class="oq-root">
+    <div class="order-quote-modal" role="dialog" aria-modal="true">
+
+      <button id="order-quote-close" class="order-quote-close" type="button">✕</button>
+
+      <h2 class="order-quote-title" data-i18n="order_quote.title">Create Order</h2>
+      <div class="oq-title-divider"></div>
+
+      <div class="order-quote-top">
+
+        <!-- LEFT -->
+        <div class="order-quote-left">
+
+          <div class="oq-section oq-products">
+            <h3 class="oq-section-title" data-i18n="order_quote.products">Products</h3>
+
+            <div id="order-quote-products"></div>
+
+            <button
+              id="order-quote-add-product"
+              type="button"
+              class="oq-btn-primary oq-btn-add"
+              data-i18n="order_quote.add_product"
+            >
+              Add Product
+            </button>
+          </div>
+
+          <div class="oq-section oq-notes">
+            <h3 class="oq-section-title" data-i18n="order_quote.notes">Notes</h3>
+            <textarea
+              id="order-quote-notes"
+              rows="6"
+              class="oq-textarea"
+            ></textarea>
+          </div>
+
+        </div>
+
+        <!-- RIGHT -->
+        <div class="order-quote-right">
+          <div class="oq-vertical-divider"></div>
+
+          <div class="oq-section">
+            <h3 class="oq-section-title" data-i18n="order_quote.attachments">Attachments</h3>
+
+            <div id="order-quote-dropzone" class="oq-dropzone">
+              <span data-i18n="order_quote.drop_files">
+                Drop files here or click to upload
+              </span>
+              <input id="order-quote-files" type="file" multiple hidden />
+            </div>
+
+            <div class="oq-hint">
+              jpg, jpeg, png, pdf, doc, docx, csv, xls, xlsx · max 30MB
+            </div>
+
+            <ul id="order-quote-file-list"></ul>
+          </div>
+        </div>
+      </div>
+
+      <hr class="oq-divider-horizontal" />
+
+      <!-- STEPS -->
+      <div class="oq-steps">
+        <div class="oq-step active" id="order-quote-step-1">
+          <span class="oq-step-circle">1</span>
+          <span data-i18n="order_quote.step1">Enter details</span>
+        </div>
+
+        <div class="oq-step-line"></div>
+
+        <div class="oq-step" id="order-quote-step-2" style="display:none;">
+          <span class="oq-step-circle">2</span>
+          <span data-i18n="order_quote.step2">Processing order</span>
+        </div>
+      </div>
+
+      <div class="oq-section oq-details">
+        <div class="oq-form-grid">
+          <input id="order-quote-name" type="text" data-i18n="rfq.name" />
+          <input id="order-quote-company" type="text" data-i18n="rfq.company" />
+
+          <div class="oq-phone">
+            <select id="order-quote-country"></select>
+            <input id="order-quote-phone" type="tel" data-i18n="rfq.phone" />
+          </div>
+
+          <input id="order-quote-email" type="email" data-i18n="rfq.email" />
+        </div>
+
+        <div class="oq-actions">
+          <label class="oq-terms">
+            <input id="order-quote-terms" type="checkbox" />
+            <span data-i18n="order_quote.accept_terms">
+              Accept terms and conditions
+            </span>
+            <a href="/terms.html" target="_blank" data-i18n="rfq.termsLink">Terms</a>
+          </label>
+
+          <button
+            id="order-quote-submit"
+            type="button"
+            class="oq-btn-primary"
+            data-i18n="order_quote.submit"
+          >
+            Submit
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+

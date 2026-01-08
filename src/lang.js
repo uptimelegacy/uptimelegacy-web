@@ -118,7 +118,32 @@ window.I18N = {
     "contact.form.submit": "Send message",
     "contact.form.required": "This field is required",
     "contact.form.invalidEmail": "Please enter a valid email address",
-    "contact.form.success": "Thanks for your message. We will get back to you shortly."
+    "contact.form.success": "Thanks for your message. We will get back to you shortly.",
+    "order_quote":"Order Quote",
+    "create_order":"Create Order",
+    "add_product":"Add Product",
+    "attachments":"Attachments",
+    "notes":"Notes",
+    "submit":"Submit",
+    "accept_terms":"Accept terms and conditions",
+    "order_submitted_message":"Your order is being processed. We will contact you shortly.",
+    "order_quote.title": "Create Order",
+    "order_quote.products": "Products",
+    "order_quote.add_product": "Add Product",
+    "order_quote.attachments": "Attachments",
+    "order_quote.notes": "Notes",
+    "order_quote.submit": "Submit",
+    "order_quote.processing": "Your order is being processed. We will contact you shortly.",
+    "order_quote.required": "Please fill in all required fields.",
+    "order_quote.accept_terms": "You must accept terms and conditions.",
+    "order_quote.error": "Error submitting order. Please try again.",
+    "order_quote.step1": "Enter details",
+    "order_quote.step2": "Processing order",
+    "order_quote.drop_files": "Drop files here or click to upload"
+
+
+
+    
 
   },
   es: {
@@ -236,7 +261,32 @@ window.I18N = {
     "contact.form.submit": "Enviar mensaje",
     "contact.form.required": "Este campo es obligatorio",
     "contact.form.invalidEmail": "Introduce un email válido",
-    "contact.form.success": "Gracias por tu mensaje. Te contactaremos en breve."
+    "contact.form.success": "Gracias por tu mensaje. Te contactaremos en breve.",
+
+   "order_quote":"Cotización",
+    "create_order":"Crear Pedido",
+    "add_product":"Agregar producto",
+    "attachments":"Adjuntos",
+    "notes":"Notas",
+    "submit":"Enviar",
+    "accept_terms":"Aceptar términos y condiciones",
+    "order_submitted_message":"Su pedido ya está siendo gestionado, a la brevedad nos comunicaremos con usted",
+
+    "order_quote.title": "Crear pedido",
+    "order_quote.products": "Productos",
+    "order_quote.add_product": "Añadir producto",
+    "order_quote.attachments": "Adjuntos",
+    "order_quote.notes": "Notas",
+    "order_quote.submit": "Enviar",
+    "order_quote.processing": "Tu pedido está siendo procesado. Nos pondremos en contacto contigo.",
+    "order_quote.required": "Por favor completa todos los campos obligatorios.",
+    "order_quote.accept_terms": "Debes aceptar los términos y condiciones.",
+    "order_quote.error": "Error al enviar el pedido. Inténtalo nuevamente.",
+    "order_quote.step1": "Completa los datos",
+    "order_quote.step2": "Procesando pedido",
+    "order_quote.drop_files": "Suelta archivos aquí o haz clic para subirlos"
+
+
 
   }
 };

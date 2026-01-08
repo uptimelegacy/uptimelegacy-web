@@ -73,3 +73,80 @@ main{
   .main-nav a{font-size:16px}
   main{margin-top:112px}
 }
+
+
+.order-quote-wrapper {
+  position: relative;
+  margin-right: 16px;
+}
+
+.order-quote-btn {
+  position: relative;
+  background: transparent;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--color-text-primary);
+}
+
+.order-quote-btn:hover {
+  color: var(--color-primary);
+}
+
+.order-quote-badge {
+  position: absolute;
+  top: -6px;
+  right: -10px;
+  background: #e53935;
+  color: #fff;
+  border-radius: 50%;
+  font-size: 11px;
+  min-width: 18px;
+  height: 18px;
+  line-height: 18px;
+  text-align: center;
+  padding: 0 4px;
+}
+
+
+/* =========================
+   ORDER QUOTE BUTTON (HEADER)
+   Estilo CTA destacado
+========================= */
+
+.order-quote-wrapper {
+  position: relative;
+  margin-right: 6px; /* más cerca del menú */
+}
+
+.order-quote-btn {
+  background: #0b3c5d;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 32px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: background .2s ease, box-shadow .2s ease, transform .1s ease;
+}
+
+.order-quote-btn:hover,
+.order-quote-btn:focus-visible {
+  background: #094066;
+  color: #fff; /* 🔒 texto siempre blanco */
+  box-shadow: 0 6px 16px rgba(10,79,142,.22);
+}
+
+.order-quote-btn:active {
+  transform: translateY(1px);
+}
+
+/* Badge intacto */
+.order-quote-badge {
+  top: -6px;
+  right: -6px;
+}

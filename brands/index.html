@@ -9,6 +9,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="icon" type="image/png" href="/img/favicon-sinfondo.png"/>
+  <link rel="stylesheet" href="/src/components/order-quote-modal/order-quote-products.css" />
+  <link rel="stylesheet" href="/src/components/order-quote-modal/order-quote-modal.css" />
+
   <style>
     :root{--primary:#0A4F8E;--primary-2:#2679B1;--bg:#fff;--muted:#f2f2f2;--muted-2:#f6f9fc;--text:#1e293b}
     *{box-sizing:border-box;margin:0;padding:0} html{scroll-behavior:smooth}
@@ -67,6 +70,25 @@
       </div>
     </section>
   </main>
+
+
+  <script src="/assets/js/order-quote-store.js"></script>
+
+<script>
+  fetch('/src/components/order-quote-modal/order-quote-modal.html')
+    .then(r => r.text())
+    .then(html => {
+      document.body.insertAdjacentHTML('beforeend', html);
+
+      const script = document.createElement('script');
+      script.src = '/src/components/order-quote-modal/order-quote-modal.js';
+      document.body.appendChild(script);
+    });
+</script>
+
+
+
+
   <link rel="stylesheet" href="/src/components/header/header.css">
   <script type="module" src="/src/components/header/header-loader.js"></script>
 
@@ -78,5 +100,33 @@
 
   <script src="/src/lang.js"></script>
   <script src="/src/brands.js" type="module"></script>
+
+  <!-- Order Quote Store -->
+<script src="/assets/js/order-quote-store.js"></script>
+
+<!-- Order Quote Modal Loader -->
+<script>
+  fetch('/src/components/order-quote-modal/order-quote-modal.html')
+    .then(r => r.text())
+    .then(html => {
+      document.body.insertAdjacentHTML('beforeend', html);
+
+      // Modal core
+      const modalScript = document.createElement('script');
+      modalScript.src = '/src/components/order-quote-modal/order-quote-modal.js';
+      document.body.appendChild(modalScript);
+
+      // Products
+      const productsScript = document.createElement('script');
+      productsScript.src = '/src/components/order-quote-modal/order-quote-products.js';
+      document.body.appendChild(productsScript);
+
+      // Attachments
+      const attachmentsScript = document.createElement('script');
+      attachmentsScript.src = '/src/components/order-quote-modal/order-quote-attachments.js';
+      document.body.appendChild(attachmentsScript);
+    });
+</script>
+
 </body>
 </html>

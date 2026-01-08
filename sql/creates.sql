@@ -48,3 +48,41 @@ CREATE INDEX IF NOT EXISTS idx_legal_pages_page_lang
 CREATE INDEX IF NOT EXISTS idx_legal_pages_order
   ON legal_pages (page, lang, position);
 
+
+
+DROP TABLE IF EXISTS order_files;
+DROP TABLE IF EXISTS order_items;
+DROP TABLE IF EXISTS orders;
+
+CREATE TABLE orders (
+  id SERIAL PRIMARY KEY,
+  name TEXT NOT NULL,
+  company TEXT NOT NULL,
+  phone TEXT NOT NULL,
+  country TEXT,
+  notes TEXT,
+  created_at TIMESTAMP DEFAULT NOW()
+);
+
+CREATE TABLE order_items (
+  id SERIAL PRIMARY KEY,
+  order_id INTEGER REFERENCES orders(id) ON DELETE CASCADE,
+  product_id INTEGER,
+  title TEXT NOT NULL,
+  qty INTEGER NOT NULL,
+  condition TEXT
+);
+
+CREATE TABLE order_files (
+  id SERIAL PRIMARY KEY,
+  order_id INTEGER REFERENCES orders(id) ON DELETE CASCADE,
+  filename TEXT NOT NULL,
+  mimetype TEXT,
+  size INTEGER
+);
+
+CREATE INDEX idx_order_items_order_id ON order_items(order_id);
+CREATE INDEX idx_order_files_order_id ON order_files(order_id);
+
+
+
