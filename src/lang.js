@@ -139,9 +139,14 @@ window.I18N = {
     "order_quote.error": "Error submitting order. Please try again.",
     "order_quote.step1": "Enter details",
     "order_quote.step2": "Processing order",
-    "order_quote.drop_files": "Drop files here or click to upload"
-
-
+    "order_quote.drop_files": "Drop files here or click to upload",
+    "order_quote.step2":"We take proactive steps to manage your purchase all the way to your doorstep",
+    "order_quote.browse_files": "Browse files",
+    "order_quote.col_product": "Product",
+    "order_quote.col_qty": "Qty",
+    "order_quote.col_condition": "Preferred Condition",
+    "order_quote.invalid_file_type": "This file format is not allowed.",
+    "order_quote.max_size_exceeded": "Total attachment size exceeds 30MB."
 
     
 
@@ -284,7 +289,14 @@ window.I18N = {
     "order_quote.error": "Error al enviar el pedido. Inténtalo nuevamente.",
     "order_quote.step1": "Completa los datos",
     "order_quote.step2": "Procesando pedido",
-    "order_quote.drop_files": "Suelta archivos aquí o haz clic para subirlos"
+    "order_quote.drop_files": "Suelta archivos aquí o haz clic para subirlos",
+    "order_quote.step2":"Damos seguimiento proactivo a tu compra hasta que llegue a tu puerta",
+    "order_quote.browse_files": "Explorar archivos",
+    "order_quote.col_product": "Producto",
+    "order_quote.col_qty": "Cant.",
+    "order_quote.col_condition": "Condición preferida",
+    "order_quote.invalid_file_type": "El formato del archivo no está permitido.",
+    "order_quote.max_size_exceeded": "El tamaño total de los archivos supera los 30MB."
 
 
 

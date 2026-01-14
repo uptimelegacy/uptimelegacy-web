@@ -1,3 +1,21 @@
+
+function showError(messageKey) {
+  const overlay = document.getElementById('oq-error-overlay');
+  const msg = document.getElementById('oq-error-message');
+  const close = document.getElementById('oq-error-close');
+
+  if (!overlay || !msg || !close) return;
+
+  msg.textContent = window.t(messageKey);
+
+
+  overlay.style.display = 'flex';
+
+  close.onclick = () => {
+    overlay.style.display = 'none';
+  };
+}
+
 (function () {
   const MAX_TOTAL_SIZE = 30 * 1024 * 1024; // 30MB
   const ALLOWED_TYPES = [
@@ -13,6 +31,7 @@
 
   let filesInMemory = [];
 
+
   function totalSize() {
     return filesInMemory.reduce((sum, f) => sum + f.size, 0);
   }
@@ -23,11 +42,12 @@
 
     ul.innerHTML = filesInMemory
       .map(
-        (f, i) =>
-          `<li>
+        (f, i) => `
+          <li>
             ${f.name} (${(f.size / 1024 / 1024).toFixed(2)} MB)
             <button data-index="${i}" class="oq-file-remove">✕</button>
-          </li>`
+          </li>
+        `
       )
       .join('');
 
@@ -54,12 +74,12 @@
   function handleFiles(selectedFiles) {
     for (const file of selectedFiles) {
       if (!ALLOWED_TYPES.includes(file.type)) {
-        alert('Invalid file type');
+         showError('order_quote.invalid_file_type');
         continue;
       }
 
       if (totalSize() + file.size > MAX_TOTAL_SIZE) {
-        alert('Total attachment size exceeds 30MB');
+        showError('order_quote.max_size_exceeded');
         continue;
       }
 
@@ -73,10 +93,13 @@
   function bindDropzone() {
     const dz = document.getElementById('order-quote-dropzone');
     const input = document.getElementById('order-quote-files');
-
+    const browseBtn = document.getElementById('order-quote-browse-files');
+    if (browseBtn) {
+      browseBtn.addEventListener('click', () => input.click());
+    }
     if (!dz || !input) return;
 
-    dz.addEventListener('click', () => input.click());
+  
 
     input.addEventListener('change', e => {
       handleFiles(e.target.files);
@@ -99,13 +122,12 @@
     });
   }
 
-  document.addEventListener('DOMContentLoaded', () => {
-    bindDropzone();
-  });
-
   document.addEventListener('order-quote:open', () => {
+    bindDropzone();
     renderList();
   });
+
+  document.addEventListener('order-quote:open', renderList);
 
   window.OrderQuoteAttachments = {
     getFiles: () => filesInMemory

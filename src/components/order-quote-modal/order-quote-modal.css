@@ -152,16 +152,22 @@
 ========================= */
 .oq-steps {
   display: flex;
-  align-items: center;
-  margin-bottom: 24px;
+  align-items: flex-start;
+  margin-bottom: 28px;
 }
 
 .oq-step {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 12px;
   color: #94a3b8;
   font-weight: 500;
+  max-width: 340px;
+}
+
+.oq-step-text {
+  font-size: 13px;
+  line-height: 1.35;
 }
 
 .oq-step.active {
@@ -176,6 +182,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
 }
 
 .oq-step.active .oq-step-circle {
@@ -187,8 +194,14 @@
 .oq-step-line {
   flex: 1;
   height: 1px;
-  background: #cbd5e1;
-  margin: 0 24px;
+  background: repeating-linear-gradient(
+    to right,
+    #cbd5e1,
+    #cbd5e1 6px,
+    transparent 6px,
+    transparent 12px
+  );
+  margin: 22px 24px 0;
 }
 
 /* =========================
@@ -247,4 +260,114 @@
     gap: 16px;
     align-items: stretch;
   }
+}
+
+
+/* STEP INACTIVE (Step 2) */
+.oq-step.inactive {
+  color: #0b3c5d;
+}
+
+.oq-step.inactive .oq-step-circle {
+  background: #fff;
+  border: 2px solid #0b3c5d;
+  color: #0b3c5d;
+}
+
+
+/* === intl-tel-input FIX dentro de modal === */
+.oq-root .iti {
+  width: 100%;
+}
+
+.oq-root .iti__flag-container {
+  padding-left: 8px;
+}
+
+.oq-root .iti input {
+  padding-left: 56px !important;
+}
+
+.oq-root .iti__country-list {
+  z-index: 1100;
+}
+
+
+/* BotÃ³n secundario (attachments) */
+.oq-btn-secondary {
+  margin-top: 12px;
+  padding: 10px 20px;
+  font-size: 14px;
+  background: #0b3c5d;
+  opacity: 0.9;
+}
+
+.oq-btn-secondary:hover {
+  opacity: 1;
+}
+
+#order-quote-file-list {
+  margin-top: 12px;
+  padding-left: 0;
+  list-style: none;
+}
+
+#order-quote-file-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  color: #0b3c5d;
+  margin-bottom: 6px;
+}
+
+.oq-file-remove {
+  background: none;
+  border: none;
+  color: #2563eb;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 0;
+}
+
+.oq-file-remove:hover {
+  color: #1e40af;
+}
+
+/* =========================
+   ERROR POPUP
+========================= */
+.oq-error-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.45);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.oq-error-box {
+  background: #fff;
+  padding: 24px 28px;
+  border-radius: 12px;
+  max-width: 360px;
+  text-align: center;
+  color: #0b3c5d;
+}
+
+.oq-error-box p {
+  margin: 0 0 16px;
+  font-size: 14px;
+}
+
+/* ðŸ”¥ eliminar cualquier separador horizontal en products */
+.oq-products hr,
+.oq-products::after,
+.oq-products::before {
+  display: none !important;
+}
+
+.order-quote-table th {
+  border-bottom: none !important;
 }

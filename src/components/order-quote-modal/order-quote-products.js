@@ -11,9 +11,9 @@
       <table class="order-quote-table">
         <thead>
           <tr>
-            <th>Product</th>
-            <th>Qty</th>
-            <th>Preferred Condition</th>
+            <th data-i18n="order_quote.col_product"></th>
+            <th data-i18n="order_quote.col_qty"></th>
+            <th data-i18n="order_quote.col_condition"></th>
             <th></th>
           </tr>
         </thead>
@@ -129,15 +129,18 @@
     });
   }
 
-  document.addEventListener('DOMContentLoaded', () => {
-    document
-      .getElementById('order-quote-add-product')
-      .addEventListener('click', () => {
-        window.OrderQuoteStore.addProduct();
-        render();
-        window.updateOrderQuoteBadge();
-      });
+  document.addEventListener('order-quote:open', () => {
+  const btn = document.getElementById('order-quote-add-product');
+  if (btn && !btn.__bound) {
+    btn.__bound = true;
+    btn.addEventListener('click', () => {
+      window.OrderQuoteStore.addProduct();
+      render();
+      window.updateOrderQuoteBadge();
+    });
+  }
 
-    document.addEventListener('order-quote:open', render);
-  });
+  render();
+});
+
 })();
