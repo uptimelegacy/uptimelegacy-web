@@ -94,8 +94,11 @@
 }
 
 .oq-btn-add {
-  margin-top: 10px;
+  margin-top: 12px;
+  margin-bottom: 24px; /* 🔥 separación clara con Notes */
 }
+
+
 
 /* =========================
    NOTES
@@ -344,8 +347,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 2000;
+  z-index: 9999; /* 🔥 MÁS ALTO QUE TODO */
 }
+
 
 .oq-error-box {
   background: #fff;
@@ -368,6 +372,24 @@
   display: none !important;
 }
 
-.order-quote-table th {
-  border-bottom: none !important;
+.order-quote-table thead th {
+  color: #334155;
+  font-weight: 600;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+
+
+/* =========================
+   ATTACHMENT ERROR MESSAGE
+========================= */
+.oq-file-error {
+  margin-top: 10px;
+  padding: 10px 12px;
+  border: 1px solid #fecaca;
+  background: #fff1f2;
+  color: #991b1b;
+  border-radius: 8px;
+  font-size: 13px;
+  visibility: hidden;
 }

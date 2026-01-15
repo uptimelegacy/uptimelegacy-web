@@ -72,20 +72,31 @@
   </main>
 
 
-  <script src="/assets/js/order-quote-store.js"></script>
+
+  <!-- Order Quote Modal (LOAD ONCE) -->
+<script src="/assets/js/order-quote-store.js"></script>
 
 <script>
-  fetch('/src/components/order-quote-modal/order-quote-modal.html')
-    .then(r => r.text())
-    .then(html => {
-      document.body.insertAdjacentHTML('beforeend', html);
+  if (!window.__ORDER_QUOTE_LOADED__) {
+    window.__ORDER_QUOTE_LOADED__ = true;
 
-      const script = document.createElement('script');
-      script.src = '/src/components/order-quote-modal/order-quote-modal.js';
-      document.body.appendChild(script);
-    });
+    fetch('/src/components/order-quote-modal/order-quote-modal.html')
+      .then(r => r.text())
+      .then(html => {
+        document.body.insertAdjacentHTML('beforeend', html);
+
+        [
+          '/src/components/order-quote-modal/order-quote-modal.js',
+          '/src/components/order-quote-modal/order-quote-products.js',
+          '/src/components/order-quote-modal/order-quote-attachments.js'
+        ].forEach(src => {
+          const s = document.createElement('script');
+          s.src = src;
+          document.body.appendChild(s);
+        });
+      });
+  }
 </script>
-
 
 
 
@@ -101,32 +112,6 @@
   <script src="/src/lang.js"></script>
   <script src="/src/brands.js" type="module"></script>
 
-  <!-- Order Quote Store -->
-<script src="/assets/js/order-quote-store.js"></script>
-
-<!-- Order Quote Modal Loader -->
-<script>
-  fetch('/src/components/order-quote-modal/order-quote-modal.html')
-    .then(r => r.text())
-    .then(html => {
-      document.body.insertAdjacentHTML('beforeend', html);
-
-      // Modal core
-      const modalScript = document.createElement('script');
-      modalScript.src = '/src/components/order-quote-modal/order-quote-modal.js';
-      document.body.appendChild(modalScript);
-
-      // Products
-      const productsScript = document.createElement('script');
-      productsScript.src = '/src/components/order-quote-modal/order-quote-products.js';
-      document.body.appendChild(productsScript);
-
-      // Attachments
-      const attachmentsScript = document.createElement('script');
-      attachmentsScript.src = '/src/components/order-quote-modal/order-quote-attachments.js';
-      document.body.appendChild(attachmentsScript);
-    });
-</script>
 
 </body>
 </html>

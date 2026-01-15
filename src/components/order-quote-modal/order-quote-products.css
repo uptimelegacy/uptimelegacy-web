@@ -16,14 +16,19 @@
 }
 
 .order-quote-table td {
-  padding: 8px 4px;
+  padding: 12px 6px;
   vertical-align: middle;
-  border-bottom: none;
 }
 
-/* Separación entre productos SIN línea */
+
+/* Separación entre productos SIN línea 
 .order-quote-table tbody tr:not(:last-child) td {
   padding-bottom: 18px;
+}
+  */
+
+.order-quote-table tbody tr:not(:last-child) td {
+  border-bottom: 1px solid #e2e8f0;
 }
 
 
@@ -81,12 +86,41 @@
   background: #fff;
 }
 
-.order-quote-table tbody tr:not(:last-child) td {
-  padding-bottom: 24px;
+
+
+/* 🔥 FIX DEFINITIVO: no mostrar autocomplete vacío */
+.oq-autocomplete:empty {
+  display: none;
 }
 
-/* Quitar continuidad visual del borde inferior */
-.order-quote-table input[type="text"],
-.order-quote-table input[type="number"] {
-  border-bottom-color: transparent;
+
+/* =========================
+   CONDITION CHIPS (Products)
+========================= */
+.oq-condition-chips {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 6px;
+}
+
+.oq-condition-chip {
+  border: 1px solid #cbd5e1;
+  background: #fff;
+  border-radius: 999px;
+  padding: 6px 8px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #334155;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.oq-condition-chip.is-active {
+  border-color: #0b3c5d;
+  color: #0b3c5d;
+  box-shadow: 0 0 0 3px rgba(11,60,93,.12);
+}
+
+.oq-condition-chip:hover {
+  background: #f8fafc;
 }

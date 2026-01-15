@@ -1,29 +1,21 @@
 (function () {
-  const containerId = 'order-quote-products';
+  const containerId = 'order-quote-products-body';
 
   function render() {
-    const container = document.getElementById(containerId);
-    if (!container) return;
+    const tbody = document.getElementById(containerId);
+    if (!tbody) return;
 
     const products = window.OrderQuoteStore.getProducts();
 
-    container.innerHTML = `
-      <table class="order-quote-table">
-        <thead>
-          <tr>
-            <th data-i18n="order_quote.col_product"></th>
-            <th data-i18n="order_quote.col_qty"></th>
-            <th data-i18n="order_quote.col_condition"></th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          ${products.map(renderRow).join('')}
-        </tbody>
-      </table>
-    `;
+    tbody.innerHTML = products.map(renderRow).join('');
 
     bindRowEvents();
+
+    // 🔥 RE-APLICAR I18N tras render dinámico
+    if (typeof window.applyI18n === 'function') {
+      const table = tbody.closest('table');
+      if (table) window.applyI18n(table);
+    }
   }
 
   function renderRow(line) {
@@ -34,7 +26,6 @@
             type="text"
             class="oq-product-input"
             value="${line.title || ''}"
-            placeholder=""
           />
           <div class="oq-autocomplete"></div>
         </td>
@@ -50,7 +41,7 @@
           <div class="oq-condition"></div>
         </td>
         <td>
-          <button class="oq-remove">✕</button>
+          <button type="button" class="oq-remove">✕</button>
         </td>
       </tr>
     `;
@@ -58,43 +49,39 @@
 
   function bindRowEvents() {
     document.querySelectorAll('.oq-qty-input').forEach(input => {
-      input.addEventListener('change', e => {
-        const lineId = e.target.closest('tr').dataset.lineId;
-        window.OrderQuoteStore.updateProduct(lineId, {
-          qty: parseInt(e.target.value, 10)
+      input.onchange = e => {
+        const id = e.target.closest('tr').dataset.lineId;
+        window.OrderQuoteStore.updateProduct(id, {
+          qty: parseInt(e.target.value, 10) || 1
         });
-      });
+      };
     });
 
     document.querySelectorAll('.oq-remove').forEach(btn => {
-      btn.addEventListener('click', e => {
-        const lineId = e.target.closest('tr').dataset.lineId;
-        window.OrderQuoteStore.removeProduct(lineId);
+      btn.onclick = e => {
+        const id = e.target.closest('tr').dataset.lineId;
+        window.OrderQuoteStore.removeProduct(id);
         render();
-        window.updateOrderQuoteBadge();
-      });
+        window.updateOrderQuoteBadge?.();
+      };
     });
 
     document.querySelectorAll('.oq-product-input').forEach(input => {
       bindAutocomplete(input);
     });
 
-    // Preferred condition (reuse RFQ logic)
-    document.querySelectorAll('.oq-condition').forEach((el, index) => {
-      const line = window.OrderQuoteStore.getProducts()[index];
+    document.querySelectorAll('.oq-condition').forEach((el, i) => {
+      const line = window.OrderQuoteStore.getProducts()[i];
       window.renderPreferredConditions(el, line.condition, cond => {
-        window.OrderQuoteStore.updateProduct(line.id, {
-          condition: cond
-        });
+        window.OrderQuoteStore.updateProduct(line.id, { condition: cond });
       });
     });
   }
 
   function bindAutocomplete(input) {
-    const wrapper = input.closest('td');
-    const dropdown = wrapper.querySelector('.oq-autocomplete');
+    const dropdown = input.nextElementSibling;
 
-    input.addEventListener('input', async e => {
+    input.oninput = async e => {
       const q = e.target.value.trim();
       if (q.length < 3) {
         dropdown.innerHTML = '';
@@ -104,43 +91,82 @@
       const res = await fetch(`/api/products/search?q=${encodeURIComponent(q)}`);
       const items = await res.json();
 
-      dropdown.innerHTML = items
-        .map(
-          p =>
-            `<div class="oq-autocomplete-item" data-id="${p.id}" data-title="${p.title}">
-              ${p.title}
-            </div>`
-        )
-        .join('');
+      dropdown.innerHTML = items.map(p => `
+        <div class="oq-autocomplete-item"
+          data-id="${p.id}"
+          data-title="${p.title}">
+          ${p.title}
+        </div>
+      `).join('');
 
       dropdown.querySelectorAll('.oq-autocomplete-item').forEach(item => {
-        item.addEventListener('click', () => {
-          const lineId = input.closest('tr').dataset.lineId;
+        item.onclick = () => {
+          const id = input.closest('tr').dataset.lineId;
           input.value = item.dataset.title;
-
-          window.OrderQuoteStore.updateProduct(lineId, {
+          window.OrderQuoteStore.updateProduct(id, {
             product_id: item.dataset.id,
             title: item.dataset.title
           });
-
           dropdown.innerHTML = '';
-        });
+        };
       });
-    });
+    };
   }
 
   document.addEventListener('order-quote:open', () => {
-  const btn = document.getElementById('order-quote-add-product');
-  if (btn && !btn.__bound) {
-    btn.__bound = true;
-    btn.addEventListener('click', () => {
-      window.OrderQuoteStore.addProduct();
-      render();
-      window.updateOrderQuoteBadge();
-    });
-  }
+    const btn = document.getElementById('order-quote-add-product');
+    if (btn && !btn.dataset.bound) {
+      btn.dataset.bound = '1';
+      btn.onclick = () => {
+        window.OrderQuoteStore.addProduct();
+        render();
+        window.updateOrderQuoteBadge?.();
+      };
+    }
 
-  render();
-});
-
+    render();
+  });
 })();
+
+// ===============================
+// Preferred Condition renderer
+// ===============================
+window.renderPreferredConditions = function (
+  container,
+  currentValue = "NEW",
+  onChange
+) {
+  if (!container) return;
+
+  const CONDITIONS = ["NEW", "USED", "EXCHANGE", "REFURBISHED"];
+
+  container.innerHTML = `
+    <div class="oq-condition-chips">
+      ${CONDITIONS.map(cond => `
+        <button
+          type="button"
+          class="oq-condition-chip ${cond === currentValue ? 'is-active' : ''}"
+          data-value="${cond}"
+        >
+          ${cond}
+        </button>
+      `).join('')}
+    </div>
+  `;
+
+  const buttons = container.querySelectorAll('.oq-condition-chip');
+
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const value = btn.dataset.value;
+
+      // 🔥 EXCLUSIVIDAD REAL
+      buttons.forEach(b => b.classList.remove('is-active'));
+      btn.classList.add('is-active');
+
+      if (typeof onChange === 'function') {
+        onChange(value);
+      }
+    });
+  });
+};

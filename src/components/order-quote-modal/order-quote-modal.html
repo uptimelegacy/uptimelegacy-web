@@ -7,54 +7,74 @@
       <h2 class="order-quote-title" data-i18n="order_quote.title"></h2>
       <div class="oq-title-divider"></div>
 
+      <!-- TOP GRID -->
       <div class="order-quote-top">
 
-        <div class="order-quote-left">
-          <div class="oq-section oq-products">
-            <h3 class="oq-section-title" data-i18n="order_quote.products"></h3>
-            <div id="order-quote-products"></div>
+        <!-- LEFT / PRODUCTS -->
+        <div class="order-quote-left oq-products">
 
-            <button
-              id="order-quote-add-product"
-              type="button"
-              class="oq-btn-primary oq-btn-add"
-              data-i18n="order_quote.add_product">
-            </button>
-          </div>
+          <h3 class="oq-section-title" data-i18n="order_quote.products"></h3>
 
-          <div class="oq-section oq-notes">
+          <!-- PRODUCTS TABLE -->
+          <table class="order-quote-table">
+            <thead>
+              <tr>
+                  <th data-i18n="order_quote.col_product"></th>
+                  <th data-i18n="order_quote.col_qty"></th>
+                  <th data-i18n="order_quote.col_condition"></th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="order-quote-products-body"></tbody>
+          </table>
+
+          <button
+            id="order-quote-add-product"
+            type="button"
+            class="oq-btn-primary oq-btn-add"
+            data-i18n="order_quote.add_product">
+          </button>
+
+          <!-- NOTES -->
+          <div class="oq-section">
             <h3 class="oq-section-title" data-i18n="order_quote.notes"></h3>
-            <textarea id="order-quote-notes" rows="6" class="oq-textarea"></textarea>
+            <textarea
+              id="order-quote-notes"
+              rows="5"
+              class="oq-textarea">
+            </textarea>
           </div>
         </div>
 
+        <!-- RIGHT / ATTACHMENTS -->
         <div class="order-quote-right">
           <div class="oq-vertical-divider"></div>
 
-          <div class="oq-section">
-            <h3 class="oq-section-title" data-i18n="order_quote.attachments"></h3>
+          <h3 class="oq-section-title" data-i18n="order_quote.attachments"></h3>
 
-            <div id="order-quote-dropzone" class="oq-dropzone">
-              <span data-i18n="order_quote.drop_files"></span>
-              <input id="order-quote-files" type="file" multiple hidden />
-            </div>
-
-            <div class="oq-hint">
-              jpg, jpeg, png, pdf, doc, docx, csv, xls, xlsx · max 30MB
-            </div>
-
-            <button
-              type="button"
-              id="order-quote-browse-files"
-              class="oq-btn-primary oq-btn-secondary"
-              data-i18n="order_quote.browse_files">
-            </button>
-
-            <ul id="order-quote-file-list"></ul>
+          <div id="order-quote-dropzone" class="oq-dropzone">
+            <span data-i18n="order_quote.drop_files"></span>
+            <input id="order-quote-files" type="file" multiple hidden />
           </div>
+
+          <div class="oq-hint">
+            jpg, jpeg, png, pdf, doc, docx, csv, xls, xlsx · max 30MB
+          </div>
+
+          <button
+            type="button"
+            id="order-quote-browse-files"
+            class="oq-btn-primary oq-btn-secondary"
+            data-i18n="order_quote.browse_files">
+          </button>
+          <div id="order-quote-file-error" class="oq-file-error"></div>
+
+
+          <ul id="order-quote-file-list"></ul>
         </div>
       </div>
 
+      <!-- STEPS -->
       <div class="oq-steps">
         <div class="oq-step active">
           <span class="oq-step-circle">1</span>
@@ -69,6 +89,7 @@
         </div>
       </div>
 
+      <!-- DETAILS -->
       <div class="oq-section oq-details">
         <div class="oq-form-grid">
           <input id="order-quote-name" type="text" data-i18n="rfq.name" />
@@ -97,11 +118,10 @@
   </div>
 </div>
 
-<!-- ERROR POPUP (FUERA DEL MODAL) -->
+<!-- ERROR POPUP -->
 <div id="oq-error-overlay" class="oq-error-overlay" style="display:none;">
   <div class="oq-error-box">
     <p id="oq-error-message"></p>
     <button id="oq-error-close" class="oq-btn-primary">OK</button>
   </div>
 </div>
-

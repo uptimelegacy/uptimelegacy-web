@@ -1,20 +1,46 @@
+function showError(message) {
+  const rightCol = document.querySelector('.order-quote-right');
+  if (!rightCol) {
+    alert(message); // fallback absoluto
+    return;
+  }
 
-function showError(messageKey) {
-  const overlay = document.getElementById('oq-error-overlay');
-  const msg = document.getElementById('oq-error-message');
-  const close = document.getElementById('oq-error-close');
+  let box = rightCol.querySelector('.oq-file-error-forced');
 
-  if (!overlay || !msg || !close) return;
+  if (!box) {
+    box = document.createElement('div');
+    box.className = 'oq-file-error-forced';
 
-  msg.textContent = window.t(messageKey);
+    // 🔥 estilos inline IMPOSIBLES de ocultar
+    box.style.cssText = `
+      margin-top: 12px !important;
+      padding: 12px 14px !important;
+      border: 2px solid #dc2626 !important;
+      background: #fff1f2 !important;
+      color: #991b1b !important;
+      border-radius: 8px !important;
+      font-size: 14px !important;
+      display: block !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+      position: relative !important;
+      z-index: 99999 !important;
+    `;
 
+    // insertarlo justo después del botón Browse
+    const browseBtn = document.getElementById('order-quote-browse-files');
+    if (browseBtn && browseBtn.parentNode) {
+      browseBtn.parentNode.insertBefore(box, browseBtn.nextSibling);
+    } else {
+      rightCol.appendChild(box);
+    }
+  }
 
-  overlay.style.display = 'flex';
-
-  close.onclick = () => {
-    overlay.style.display = 'none';
-  };
+  box.textContent = message;
+  box.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
 }
+
+
 
 (function () {
   const MAX_TOTAL_SIZE = 30 * 1024 * 1024; // 30MB
@@ -30,7 +56,6 @@ function showError(messageKey) {
   ];
 
   let filesInMemory = [];
-
 
   function totalSize() {
     return filesInMemory.reduce((sum, f) => sum + f.size, 0);
@@ -74,12 +99,16 @@ function showError(messageKey) {
   function handleFiles(selectedFiles) {
     for (const file of selectedFiles) {
       if (!ALLOWED_TYPES.includes(file.type)) {
-         showError('order_quote.invalid_file_type');
+        showError(
+          `❌ ${file.name} — ${window.t('order_quote.invalid_file_type') || 'Invalid file type'}`
+        );
         continue;
       }
 
       if (totalSize() + file.size > MAX_TOTAL_SIZE) {
-        showError('order_quote.max_size_exceeded');
+        showError(
+          `❌ ${file.name} — ${window.t('order_quote.max_size_exceeded') || 'Max size exceeded'}`
+        );
         continue;
       }
 
@@ -94,17 +123,34 @@ function showError(messageKey) {
     const dz = document.getElementById('order-quote-dropzone');
     const input = document.getElementById('order-quote-files');
     const browseBtn = document.getElementById('order-quote-browse-files');
-    if (browseBtn) {
-      browseBtn.addEventListener('click', () => input.click());
-    }
+
     if (!dz || !input) return;
+    if (dz.dataset.bound === '1') return;
+    dz.dataset.bound = '1';
 
-  
+    // 🔗 Conectar el botón Browse con el input real
+    if (browseBtn) {
+      browseBtn.addEventListener('click', e => {
+        e.preventDefault();
+        input.click();
+      });
+    }
 
-    input.addEventListener('change', e => {
-      handleFiles(e.target.files);
+
+    input.addEventListener('change', () => {
+      // leer SIEMPRE desde input.files
+      const files = input.files;
+      if (!files || !files.length) {
+        // Usuario canceló el selector → NO es error
+        return;
+      }
+
+
+      handleFiles(files);
       input.value = '';
     });
+
+
 
     dz.addEventListener('dragover', e => {
       e.preventDefault();
@@ -122,12 +168,25 @@ function showError(messageKey) {
     });
   }
 
-  document.addEventListener('order-quote:open', () => {
-    bindDropzone();
-    renderList();
-  });
+  function initAttachmentsOnce() {
+  const dz = document.getElementById('order-quote-dropzone');
+  if (!dz) return;
 
-  document.addEventListener('order-quote:open', renderList);
+  bindDropzone();
+  renderList();
+}
+
+// 1️⃣ cuando se abre “oficialmente” el modal
+document.addEventListener('order-quote:open', () => {
+  setTimeout(initAttachmentsOnce, 0);
+});
+
+// 2️⃣ fallback: por si el modal se muestra sin disparar el evento
+document.addEventListener('DOMContentLoaded', () => {
+  setTimeout(initAttachmentsOnce, 0);
+});
+
+
 
   window.OrderQuoteAttachments = {
     getFiles: () => filesInMemory
