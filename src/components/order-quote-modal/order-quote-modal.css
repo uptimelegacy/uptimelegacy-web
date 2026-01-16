@@ -378,18 +378,3 @@
   border-bottom: 1px solid #e2e8f0;
 }
 
-
-
-/* =========================
-   ATTACHMENT ERROR MESSAGE
-========================= */
-.oq-file-error {
-  margin-top: 10px;
-  padding: 10px 12px;
-  border: 1px solid #fecaca;
-  background: #fff1f2;
-  color: #991b1b;
-  border-radius: 8px;
-  font-size: 13px;
-  visibility: hidden;
-}

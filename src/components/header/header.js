@@ -1,45 +1,48 @@
-(function () {
-  function updateOrderQuoteBadge() {
-    if (!window.OrderQuoteStore) return;
+import { OrderQuoteStore } from '/src/order-quote-store.js';
 
-    const badge = document.getElementById('order-quote-badge');
-    if (!badge) return;
+function updateOrderQuoteBadge() {
+  const badge = document.getElementById('order-quote-badge');
+  if (!badge) return;
 
-    const count = window.OrderQuoteStore.getLineCount();
-    badge.textContent = count;
-    badge.style.display = count > 0 ? 'inline-block' : 'none';
+  const count = OrderQuoteStore.getProductCount();
+  badge.textContent = count;
+  badge.style.display = count > 0 ? 'inline-block' : 'none';
+}
+
+function openOrderQuote() {
+  if (window.OrderQuoteModal?.open) {
+    window.OrderQuoteModal.open();
+    return;
   }
 
-  function openOrderQuote() {
+  const retry = setInterval(() => {
     if (window.OrderQuoteModal?.open) {
+      clearInterval(retry);
       window.OrderQuoteModal.open();
-      return;
     }
+  }, 50);
+}
 
-    const retry = setInterval(() => {
-      if (window.OrderQuoteModal?.open) {
-        clearInterval(retry);
-        window.OrderQuoteModal.open();
-      }
-    }, 50);
-  }
+function bindHeader() {
+  const btn = document.getElementById('order-quote-button');
+  if (!btn || btn.dataset.bound === '1') return;
 
-  function bind() {
-    const btn = document.getElementById('order-quote-button');
-    if (!btn || btn.__bound) return;
+  btn.dataset.bound = '1';
+  btn.addEventListener('click', openOrderQuote);
 
-    btn.__bound = true;
-    btn.addEventListener('click', openOrderQuote);
-
+  updateOrderQuoteBadge();
+  
+  // 🔔 escuchar cambios reales del store
+  OrderQuoteStore.subscribe(() => {
     updateOrderQuoteBadge();
-    window.addEventListener('storage', updateOrderQuoteBadge);
-  }
+  });
 
+}
+
+export function initHeader() {
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', bind);
+    document.addEventListener('DOMContentLoaded', bindHeader);
   } else {
-    bind();
+    bindHeader();
   }
-
-  window.updateOrderQuoteBadge = updateOrderQuoteBadge;
-})();
+}

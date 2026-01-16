@@ -100,7 +100,9 @@
   />
 
 <!-- Order Quote Modal (LOAD ONCE) -->
-<script src="/assets/js/order-quote-store.js"></script>
+<script type="module" src="/src/order-quote-store.js"></script>
+
+
 
 <script>
   if (!window.__ORDER_QUOTE_LOADED__) {
@@ -117,6 +119,7 @@
           '/src/components/order-quote-modal/order-quote-attachments.js'
         ].forEach(src => {
           const s = document.createElement('script');
+          s.type = 'module';
           s.src = src;
           document.body.appendChild(s);
         });

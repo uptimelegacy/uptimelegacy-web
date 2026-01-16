@@ -1,43 +1,41 @@
+import { OrderQuoteStore } from '/src/order-quote-store.js';
+
+
+const MAX_FILES = 5;
+
 function showError(message) {
-  const rightCol = document.querySelector('.order-quote-right');
-  if (!rightCol) {
-    alert(message); // fallback absoluto
-    return;
-  }
+  const overlay = document.getElementById('order-quote-overlay');
+  if (!overlay || overlay.style.display === 'none') return;
 
-  let box = rightCol.querySelector('.oq-file-error-forced');
+  const rightCol = overlay.querySelector('.order-quote-right');
+  if (!rightCol) return;
 
-  if (!box) {
-    box = document.createElement('div');
-    box.className = 'oq-file-error-forced';
-
-    // 🔥 estilos inline IMPOSIBLES de ocultar
-    box.style.cssText = `
-      margin-top: 12px !important;
-      padding: 12px 14px !important;
-      border: 2px solid #dc2626 !important;
-      background: #fff1f2 !important;
-      color: #991b1b !important;
-      border-radius: 8px !important;
-      font-size: 14px !important;
-      display: block !important;
-      visibility: visible !important;
-      opacity: 1 !important;
-      position: relative !important;
-      z-index: 99999 !important;
+  let error = rightCol.querySelector('.oq-file-error-forced');
+  if (!error) {
+    error = document.createElement('div');
+    error.className = 'oq-file-error-forced';
+    error.style.cssText = `
+      margin-top:10px;
+      padding:10px 12px;
+      border:1px solid #fecaca;
+      background:#fff1f2;
+      color:#991b1b;
+      border-radius:8px;
+      font-size:13px;
     `;
-
-    // insertarlo justo después del botón Browse
-    const browseBtn = document.getElementById('order-quote-browse-files');
-    if (browseBtn && browseBtn.parentNode) {
-      browseBtn.parentNode.insertBefore(box, browseBtn.nextSibling);
-    } else {
-      rightCol.appendChild(box);
-    }
+    rightCol.insertBefore(error, rightCol.querySelector('#order-quote-file-list'));
   }
 
-  box.textContent = message;
-  box.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  error.textContent = message;
+
+  // ⏱️ auto-hide después de 5 segundos
+  clearTimeout(error._hideTimer);
+  error._hideTimer = setTimeout(() => {
+    if (error && error.parentNode) {
+      error.remove();
+    }
+  }, 5000);
+
 }
 
 
@@ -62,6 +60,7 @@ function showError(message) {
   }
 
   function renderList() {
+    if (!window.OrderQuoteModal?.isOpen()) return;
     const ul = document.getElementById('order-quote-file-list');
     if (!ul) return;
 
@@ -78,7 +77,10 @@ function showError(message) {
 
     ul.querySelectorAll('.oq-file-remove').forEach(btn => {
       btn.addEventListener('click', e => {
+       
         const idx = parseInt(e.target.dataset.index, 10);
+        if (Number.isNaN(idx)) return;
+
         filesInMemory.splice(idx, 1);
         syncStore();
         renderList();
@@ -87,7 +89,7 @@ function showError(message) {
   }
 
   function syncStore() {
-    window.OrderQuoteStore.setAttachments(
+    OrderQuoteStore.setAttachments(
       filesInMemory.map(f => ({
         name: f.name,
         size: f.size,
@@ -97,19 +99,29 @@ function showError(message) {
   }
 
   function handleFiles(selectedFiles) {
+    
+    if (!window.OrderQuoteModal?.isOpen()) return;
     for (const file of selectedFiles) {
       if (!ALLOWED_TYPES.includes(file.type)) {
         showError(
-          `❌ ${file.name} — ${window.t('order_quote.invalid_file_type') || 'Invalid file type'}`
+          `❌ ${file.name} — Invalid file type`
         );
+
         continue;
       }
 
       if (totalSize() + file.size > MAX_TOTAL_SIZE) {
         showError(
-          `❌ ${file.name} — ${window.t('order_quote.max_size_exceeded') || 'Max size exceeded'}`
+          `❌ ${file.name} — Max size exceeded`
         );
+
         continue;
+      }
+
+      if (filesInMemory.length >= MAX_FILES) {
+        showError("Maximum 5 files allowed");
+
+        return;
       }
 
       filesInMemory.push(file);
@@ -168,13 +180,16 @@ function showError(message) {
     });
   }
 
-  function initAttachmentsOnce() {
+function initAttachmentsOnce() {
+ 
+
   const dz = document.getElementById('order-quote-dropzone');
   if (!dz) return;
 
   bindDropzone();
   renderList();
 }
+
 
 // 1️⃣ cuando se abre “oficialmente” el modal
 document.addEventListener('order-quote:open', () => {

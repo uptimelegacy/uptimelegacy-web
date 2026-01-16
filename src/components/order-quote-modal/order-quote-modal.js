@@ -1,6 +1,8 @@
 (function () {
   let overlay;
   let iti = null;
+  let isOpen = false;
+
 
   function initPhone() {
     const input = document.getElementById('order-quote-phone');
@@ -26,6 +28,7 @@
 
   function openModal() {
     if (!overlay) return;
+    isOpen = true;
     overlay.style.display = "flex";
     initPhone();
     document.dispatchEvent(new Event('order-quote:open'));
@@ -33,8 +36,12 @@
 
   function closeModal() {
     if (!overlay) return;
+    isOpen = false;
     overlay.style.display = "none";
+    document.dispatchEvent(new Event('order-quote:close'));
   }
+
+
 
   document.addEventListener("DOMContentLoaded", () => {
     overlay = document.getElementById("order-quote-overlay");
@@ -48,6 +55,8 @@
   window.OrderQuoteModal = {
     open: openModal,
     close: closeModal,
+    isOpen: () => isOpen,
     isReady: true
   };
+
 })();

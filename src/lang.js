@@ -146,7 +146,9 @@ window.I18N = {
     "order_quote.col_qty": "Qty",
     "order_quote.col_condition": "Preferred Condition",
     "order_quote.invalid_file_type": "This file format is not allowed.",
-    "order_quote.max_size_exceeded": "Total attachment size exceeds 30MB."
+    "order_quote.max_size_exceeded": "Total attachment size exceeds 30MB.",
+    "order_quote.max_files": "Maximum 5 files allowed."
+
 
     
 
@@ -296,7 +298,9 @@ window.I18N = {
     "order_quote.col_qty": "Cant.",
     "order_quote.col_condition": "Condición preferida",
     "order_quote.invalid_file_type": "El formato del archivo no está permitido.",
-    "order_quote.max_size_exceeded": "El tamaño total de los archivos supera los 30MB."
+    "order_quote.max_size_exceeded": "El tamaño total de los archivos supera los 30MB.",
+    "order_quote.max_files": "Máximo 5 archivos permitidos."
+
 
 
 
