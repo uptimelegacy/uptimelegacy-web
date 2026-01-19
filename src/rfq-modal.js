@@ -1,3 +1,8 @@
+import { OrderQuoteStore } from '/src/order-quote-store.js';
+
+
+
+
 let _mounted = false;
 let _overlay, _modal, _form, _btnSubmit, _alert;
 let _titleEl, _subtitleEl;
@@ -166,6 +171,9 @@ function resetFormUI() {
   _form.reset();
   _form.dataset.touched = "0";
   setAlert("", "");
+
+  _btnSubmit.disabled = true;
+  _btnSubmit.textContent = t("rfq.quickQuote", "Quick Quote");
   // por defecto NEW activo
   _chipWrap.querySelectorAll(".ul-rfq-chip").forEach((b) => b.classList.remove("is-active"));
   const first = _chipWrap.querySelector('.ul-rfq-chip[data-value="NEW"]');
@@ -198,7 +206,8 @@ export function initRFQModal() {
       <button type="button" class="ul-rfq-close" aria-label="Close">×</button>
     </div>
 
-    <form class="ul-rfq-body" novalidate>
+    
+    <form id="ul-rfq-form" class="ul-rfq-body" novalidate>
       <div class="ul-rfq-grid">
         <div class="ul-rfq-field">
           <label><span data-i18n="rfq.name">Name</span> <span class="ul-rfq-req">*</span></label>
@@ -258,10 +267,25 @@ export function initRFQModal() {
 
       <div class="ul-rfq-alert" role="status" aria-live="polite"></div>
 
-      <div class="ul-rfq-footer">
-        <button type="submit" class="ul-rfq-submit" disabled data-i18n="rfq.quickQuote">Quick Quote</button>
-      </div>
+     
     </form>
+    <div class="ul-rfq-footer">
+      <button
+        type="button"
+        class="ul-rfq-submit ul-rfq-add-list"
+      >
+        Add to List
+      </button>
+
+      <button
+        type="submit"
+        form="ul-rfq-form"
+        class="ul-rfq-submit"
+        disabled
+      >
+        Quick Quote
+      </button>
+    </div>
   `;
 
   document.body.appendChild(_overlay);
@@ -270,7 +294,42 @@ export function initRFQModal() {
   _titleEl = _modal.querySelector("#ul-rfq-title");
   _subtitleEl = _modal.querySelector("#ul-rfq-subtitle");
   _form = _modal.querySelector("form");
-  _btnSubmit = _modal.querySelector(".ul-rfq-submit");
+  _btnSubmit = _modal.querySelector('button[type="submit"]');
+  const addToListBtn = _modal.querySelector('.ul-rfq-add-list');
+
+
+  addToListBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    //const productId = _modal.dataset.partNumber;
+    const productId = _modal.dataset.productId;
+    if (!productId) return;
+
+    const qty = Math.max(1, parseInt(_qtyEl.value, 10) || 1);
+    const condition = selectedConditions();
+
+    OrderQuoteStore.upsertProductByProductId({
+      product_id: productId,        // 🔑 clave única
+      part_number: productId,
+      title: productId,
+      manufacturer: _modal.dataset.manufacturer || "",
+      qty,
+      condition
+    });
+
+    window.updateOrderQuoteBadge?.();
+    setAlert("success", t("rfq.added", "Product added to list"));
+
+    // ocultar mensaje luego de 4s
+    setTimeout(() => {
+      setAlert("", "");
+    }, 4000);
+
+  });
+
+
+
   _alert = _modal.querySelector(".ul-rfq-alert");
 
   _nameEl = _modal.querySelector("#ul-rfq-name");
@@ -290,16 +349,16 @@ export function initRFQModal() {
   // Focus trap + ESC
   document.addEventListener("keydown", onKeyDown);
 
-  // Form touched flag
-  const markTouched = () => {
-    if (_form.dataset.touched !== "1") _form.dataset.touched = "1";
-  };
-  ["input", "change", "blur"].forEach((evt) => {
+  // Validación silenciosa (no pinta errores)
+  ["input", "change"].forEach((evt) => {
     _form.addEventListener(evt, () => {
-      markTouched();
       updateSubmitState();
     }, true);
   });
+
+
+
+
 
   // Chips
   _chipWrap.addEventListener("click", (e) => {
@@ -380,12 +439,22 @@ export function initRFQModal() {
         return;
       }
 
+      
+
+      // reiniciar formulario completo
+      resetFormUI();
+
       setAlert("success", t("rfq.success", "Thanks — your request has been sent."));
-      // limpia y cierra con pequeño delay (para que el usuario vea el feedback)
+
+      // restaurar botón
+      _btnSubmit.disabled = false;
+      _btnSubmit.textContent = t("rfq.quickQuote", "Quick Quote");
+
+      // ocultar mensaje tras 10s SIN cerrar modal
       setTimeout(() => {
-        resetFormUI();
-        closeRFQ();
-      }, 900);
+        setAlert("", "");
+      }, 6000);
+ 
     } catch {
       setAlert("error", t("rfq.error", "Sorry, something went wrong. Please try again."));
       _btnSubmit.textContent = originalText;
@@ -411,7 +480,10 @@ export function initRFQModal() {
 export function openRFQ({ partNumber, manufacturer }) {
   initRFQModal();
 
-  _modal.dataset.partNumber = String(partNumber || "").trim();
+  //_modal.dataset.partNumber = String(partNumber || "").trim();
+  const pid = String(partNumber || "").trim();
+  _modal.dataset.productId = pid;
+  _modal.dataset.partNumber = pid;
   _modal.dataset.manufacturer = String(manufacturer || "").trim();
 
   _titleEl.textContent = (_modal.dataset.partNumber || "-").toUpperCase();
@@ -448,3 +520,4 @@ export function closeRFQ() {
     setTimeout(() => _lastFocus.focus(), 0);
   }
 }
+

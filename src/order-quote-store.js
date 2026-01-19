@@ -119,6 +119,24 @@ function addProduct(data = {}) {
   return { ok: true, product };
 }
 
+function upsertProductByProductId(data = {}) {
+  if (!data.product_id) return { ok: false };
+
+  const existing = _products.find(p => p.product_id === data.product_id);
+
+  if (existing) {
+    updateProduct(existing.id, {
+      qty: data.qty,
+      condition: data.condition,
+      title: data.title
+    });
+    return { ok: true, product: existing };
+  }
+
+  return addProduct(data);
+}
+
+
 function updateProduct(id, patch = {}) {
   const idx = _products.findIndex((p) => p.id === id);
   if (idx === -1) return;
@@ -190,6 +208,7 @@ export const OrderQuoteStore = {
   getProducts,
   getProductCount,
   addProduct,
+  upsertProductByProductId,
   updateProduct,
   removeProduct,
   clearProducts,
