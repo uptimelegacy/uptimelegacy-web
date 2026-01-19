@@ -31,6 +31,19 @@ function initOrderQuotePhone() {
   let iti = null;
   let isOpen = false;
 
+  function init() {
+    overlay = document.getElementById('order-quote-overlay');
+    if (!overlay) {
+      console.warn('[OrderQuoteModal] overlay not found');
+      return;
+    }
+
+    document
+      .getElementById('order-quote-close')
+      ?.addEventListener('click', closeModal);
+  }
+
+
 
   function initPhone() {
     const input = document.getElementById('order-quote-phone');
@@ -73,22 +86,19 @@ function initOrderQuotePhone() {
     document.dispatchEvent(new Event('order-quote:close'));
   }
 
-
-
-  document.addEventListener("DOMContentLoaded", () => {
-    overlay = document.getElementById("order-quote-overlay");
-    if (!overlay) return;
-
-    document
-      .getElementById("order-quote-close")
-      ?.addEventListener("click", closeModal);
-  });
+ 
+  init()
 
   window.OrderQuoteModal = {
     open: openModal,
     close: closeModal,
-    isOpen: () => isOpen,
-    isReady: true
+    isOpen: () => isOpen
   };
 
+
+
+  
+
 })();
+
+

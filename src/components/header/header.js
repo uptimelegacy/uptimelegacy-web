@@ -9,29 +9,22 @@ function updateOrderQuoteBadge() {
   badge.style.display = count > 0 ? 'inline-block' : 'none';
 }
 
-function openOrderQuote() {
-  if (window.OrderQuoteModal?.open) {
-    window.OrderQuoteModal.open();
-    return;
-  }
-
-  const retry = setInterval(() => {
-    if (window.OrderQuoteModal?.open) {
-      clearInterval(retry);
-      window.OrderQuoteModal.open();
-    }
-  }, 50);
+function requestOpenOrderQuote() {
+  window.OrderQuote?.open();
 }
+
+
 
 function bindHeader() {
   const btn = document.getElementById('order-quote-button');
   if (!btn || btn.dataset.bound === '1') return;
 
   btn.dataset.bound = '1';
-  btn.addEventListener('click', openOrderQuote);
+  btn.addEventListener('click', requestOpenOrderQuote);
+
 
   updateOrderQuoteBadge();
-  
+
   // 🔔 escuchar cambios reales del store
   OrderQuoteStore.subscribe(() => {
     updateOrderQuoteBadge();

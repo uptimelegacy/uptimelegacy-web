@@ -1,5 +1,6 @@
 import { initHeader } from './header.js';
 
+
 async function loadHeader() {
   const placeholder = document.getElementById('header-placeholder');
   if (!placeholder) return;

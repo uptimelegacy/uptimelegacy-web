@@ -4,11 +4,7 @@
   <meta charset="UTF-8" />
   <title data-i18n="footer.c4">Terms & Conditions</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="/css/style.css" />
-  <link
-  rel="stylesheet"
-  href="/components/order-quote-modal/order-quote-products.css"
-  />
+ 
 
 </head>
 
@@ -106,7 +102,7 @@
 
     </style>
   <div id="header-placeholder"></div>
-
+    <script type="module" src="/src/site-bootstrap.js"></script>
   <main class="legal-page">
     <div class="container">
 
@@ -126,34 +122,6 @@
   <link rel="stylesheet" href="/src/components/order-quote-modal/order-quote-products.css" />
   <link rel="stylesheet" href="/src/components/order-quote-modal/order-quote-modal.css" />
 
-
- <!-- Order Quote Modal (LOAD ONCE) -->
-<script type="module" src="/src/order-quote-store.js"></script>
-
-
-
-<script>
-  if (!window.__ORDER_QUOTE_LOADED__) {
-    window.__ORDER_QUOTE_LOADED__ = true;
-
-    fetch('/src/components/order-quote-modal/order-quote-modal.html')
-      .then(r => r.text())
-      .then(html => {
-        document.body.insertAdjacentHTML('beforeend', html);
-
-        [
-          '/src/components/order-quote-modal/order-quote-modal.js',
-          '/src/components/order-quote-modal/order-quote-products.js',
-          '/src/components/order-quote-modal/order-quote-attachments.js'
-        ].forEach(src => {
-          const s = document.createElement('script');
-          s.type = 'module';
-          s.src = src;
-          document.body.appendChild(s);
-        });
-      });
-  }
-</script>
 
 
 
