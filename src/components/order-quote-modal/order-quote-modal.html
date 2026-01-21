@@ -95,27 +95,103 @@
       <!-- DETAILS -->
       <div class="oq-section oq-details">
         <div class="oq-form-grid">
-          <input id="order-quote-name" type="text" data-i18n="rfq.name" />
-          <input id="order-quote-company" type="text" data-i18n="rfq.company" />
-          <input id="order-quote-phone" type="tel" data-i18n="rfq.phone" />
-          <input id="order-quote-email" type="email" data-i18n="rfq.email" />
+
+          <!-- NAME -->
+          <div class="oq-field" data-field="name">
+            <label for="order-quote-name">
+              <span data-i18n="rfq.name"></span>
+              <span class="oq-req">*</span>
+            </label>
+
+            <input
+              id="order-quote-name"
+              type="text"
+              data-i18n="rfq.name"
+            />
+
+            <div class="oq-error"></div>
+          </div>
+
+          <!-- COMPANY -->
+          <div class="oq-field" data-field="company">
+            <label for="order-quote-company">
+              <span data-i18n="rfq.company"></span>
+              <span class="oq-req">*</span>
+            </label>
+
+            <input
+              id="order-quote-company"
+              type="text"
+              data-i18n="rfq.company"
+            />
+
+            <div class="oq-error"></div>
+          </div>
+
+          <!-- PHONE -->
+          <div class="oq-field" data-field="phone">
+            <label for="order-quote-phone">
+              <span data-i18n="rfq.phone"></span>
+              <span class="oq-req">*</span>
+            </label>
+
+            <input
+              id="order-quote-phone"
+              type="tel"
+              data-i18n="rfq.phone"
+            />
+
+            <div class="oq-error"></div>
+          </div>
+
+          <!-- EMAIL -->
+          <div class="oq-field" data-field="email">
+            <label for="order-quote-email">
+              <span data-i18n="rfq.email"></span>
+              <span class="oq-req">*</span>
+            </label>
+
+            <input
+              id="order-quote-email"
+              type="email"
+              data-i18n="rfq.email"
+            />
+
+            <div class="oq-error"></div>
+          </div>
+
         </div>
 
         <div class="oq-actions">
-          <label class="oq-terms">
-            <input id="order-quote-terms" type="checkbox" />
-            <span data-i18n="order_quote.accept_terms"></span>
-            <a href="/terms.html" target="_blank" data-i18n="rfq.termsLink"></a>
-          </label>
 
-          <button
-            id="order-quote-submit"
-            type="button"
-            class="oq-btn-primary"
-            data-i18n="order_quote.submit">
-          </button>
+          <!-- LEFT: TERMS -->
+          <div class="oq-actions-left">
+            <label class="oq-terms">
+              <input id="order-quote-terms" type="checkbox" />
+
+              <span data-i18n="order_quote.accept_terms"></span>
+              <a href="/terms.html" target="_blank" data-i18n="rfq.termsLink"></a>
+              <span class="oq-req">*</span>
+            </label>
+
+            <div class="oq-error" data-field="terms"></div>
+          </div>
+
+          <!-- RIGHT: SUBMIT -->
+          <div class="oq-actions-right">
+            <button
+              id="order-quote-submit"
+              type="button"
+              class="oq-btn-primary"
+              data-i18n="order_quote.submit"
+              disabled>
+            </button>
+          </div>
+
         </div>
+
       </div>
+
 
     </div>
   </div>

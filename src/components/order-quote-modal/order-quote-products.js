@@ -83,6 +83,9 @@ import { OrderQuoteStore } from '/src/order-quote-store.js';
         OrderQuoteStore.updateProduct(id, {
           qty: parseInt(e.target.value, 10) || 1
         });
+
+        notifyOrderQuoteValidation();
+
       };
 
     });
@@ -102,6 +105,7 @@ import { OrderQuoteStore } from '/src/order-quote-store.js';
         tr.remove();
 
         window.updateOrderQuoteBadge?.();
+        notifyOrderQuoteValidation();
       };
     });
 
@@ -152,8 +156,10 @@ import { OrderQuoteStore } from '/src/order-quote-store.js';
         const id = tr.dataset.lineId;
         if (id) {
           OrderQuoteStore.updateProduct(id, {
-            title: e.target.value
-          });
+          title: e.target.value
+        });
+
+        notifyOrderQuoteValidation();
         }
       }
       const q = e.target.value.trim();
@@ -210,7 +216,7 @@ import { OrderQuoteStore } from '/src/order-quote-store.js';
             product_id: item.dataset.id,
             title: item.dataset.title
           });
-
+          notifyOrderQuoteValidation();
           dropdown.innerHTML = '';
         };
       });
@@ -230,6 +236,7 @@ import { OrderQuoteStore } from '/src/order-quote-store.js';
 
         appendRow(res.product);
         window.updateOrderQuoteBadge?.();
+        notifyOrderQuoteValidation();
       };
     }
 
@@ -296,3 +303,32 @@ window.renderPreferredConditions = function (
   });
 };
 
+// ===============================
+// Product validation (for submit)
+// ===============================
+window.hasValidOrderQuoteProducts = function () {
+  if (!OrderQuoteStore) return false;
+
+  const products = OrderQuoteStore.getProducts();
+  if (!Array.isArray(products) || products.length === 0) return false;
+
+  return products.every(p => {
+    if (!p) return false;
+
+    // title >= 3 chars
+    if (!p.title || p.title.trim().length < 3) {
+      return false;
+    }
+
+    // qty >= 1
+    if (!p.qty || Number(p.qty) < 1) {
+      return false;
+    }
+
+    return true;
+  });
+};
+
+function notifyOrderQuoteValidation() {
+  document.dispatchEvent(new Event('order-quote:products-changed'));
+}
