@@ -56,6 +56,21 @@ async function uploadFileToBlob(file) {
     return res.json();
   }
 
+  async function deleteFileFromBlob(url) {
+    try {
+      await fetch('/api/delete-order-file', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ url })
+      });
+    } catch {
+      // silent fail (no rompemos UX)
+    }
+  }
+
+
 
 (function () {
   const MAX_TOTAL_SIZE = 30 * 1024 * 1024; // 30MB
@@ -93,15 +108,23 @@ async function uploadFileToBlob(file) {
       .join('');
 
     ul.querySelectorAll('.oq-file-remove').forEach(btn => {
-      btn.addEventListener('click', e => {
-       
+      btn.addEventListener('click', async e => {
         const idx = parseInt(e.target.dataset.index, 10);
         if (Number.isNaN(idx)) return;
 
+        const file = filesInMemory[idx];
+
+        // 🔥 borrar de Vercel Blob (best-effort)
+        if (file?.url) {
+          deleteFileFromBlob(file.url);
+        }
+
+        // 🔥 borrar local
         filesInMemory.splice(idx, 1);
         syncStore();
         renderList();
       });
+
     });
   }
 
