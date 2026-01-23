@@ -26,6 +26,8 @@ function showError(message) {
     rightCol.insertBefore(error, rightCol.querySelector('#order-quote-file-list'));
   }
 
+  
+
   error.textContent = message;
 
   // ⏱️ auto-hide después de 5 segundos
@@ -38,6 +40,21 @@ function showError(message) {
 
 }
 
+async function uploadFileToBlob(file) {
+    const fd = new FormData();
+    fd.append('file', file);
+
+    const res = await fetch('/api/upload-order-file', {
+      method: 'POST',
+      body: fd
+    });
+
+    if (!res.ok) {
+      throw new Error('Upload failed');
+    }
+
+    return res.json();
+  }
 
 
 (function () {
@@ -93,12 +110,14 @@ function showError(message) {
       filesInMemory.map(f => ({
         name: f.name,
         size: f.size,
-        type: f.type
+        type: f.type,
+        url: f.url
       }))
     );
   }
 
-  function handleFiles(selectedFiles) {
+
+  async function handleFiles(selectedFiles) {
     
     if (!window.OrderQuoteModal?.isOpen()) return;
     for (const file of selectedFiles) {
@@ -124,7 +143,20 @@ function showError(message) {
         return;
       }
 
-      filesInMemory.push(file);
+      //filesInMemory.push(file);
+      try {
+        const uploaded = await uploadFileToBlob(file);
+
+        filesInMemory.push({
+          name: uploaded.name,
+          size: uploaded.size,
+          type: uploaded.type,
+          url: uploaded.url
+        });
+      } catch (e) {
+        showError(`❌ ${file.name} — upload failed`);
+      }
+
     }
 
     syncStore();
