@@ -203,6 +203,31 @@ function subscribe(fn) {
 ========================= */
 loadFromSession();
 
+ function buildPayload(customer = {}, locale = "en") {
+   const items = _products.map(p => ({
+     product_id: p.product_id || null,
+     title: p.title,
+     qty: p.qty,
+     condition: Array.isArray(p.condition)
+       ? p.condition.join(",")
+       : p.condition
+   }));
+
+   const files = _attachments.map(f => ({
+     name: f.name,
+     url: f.url,
+     type: f.type,
+     size: f.size
+   }));
+
+   return {
+     customer,
+     items,
+     files,
+     locale
+   };
+ }
+
 export const OrderQuoteStore = {
   getState,
   getProducts,
@@ -215,7 +240,12 @@ export const OrderQuoteStore = {
   setAttachments,
   getAttachments,
   clearAttachments,
+  buildPayload,
   subscribe,
   MAX_PRODUCTS
 };
 
+// ⬇️ Exponer globalmente (modal / attachments / submit)
+if (typeof window !== "undefined") {
+  window.OrderQuoteStore = OrderQuoteStore;
+}
